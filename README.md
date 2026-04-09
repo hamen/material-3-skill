@@ -2,6 +2,22 @@
 
 A comprehensive [Claude Code](https://claude.ai/claude-code) skill for implementing Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
 
+## Table of contents
+
+- [What it does](#what-it-does)
+- [How this skill was built](#how-this-skill-was-built)
+  - [Sources](#sources)
+  - [Process](#process)
+  - [What this means for accuracy](#what-this-means-for-accuracy)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Build MD3 components](#build-md3-components)
+  - [Generate a theme](#generate-a-theme)
+  - [Scaffold an app](#scaffold-an-app)
+  - [Audit MD3 compliance](#audit-md3-compliance)
+- [What's included](#whats-included)
+- [License](#license)
+
 ## What it does
 
 - Guides Claude in generating **MD3-compliant UI code** with correct design tokens, components, theming, layout, and accessibility
