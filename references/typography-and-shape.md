@@ -165,10 +165,10 @@ Examples: 10sp = 0.625rem, 12sp = 0.75rem, 14sp = 0.875rem, 16sp = 1rem, 24sp = 
 | `none` | 0 | 0px | — |
 | `extra-small` | 4 | 4px | Snackbar |
 | `small` | 8 | 8px | Text fields, menus, chips |
-| `medium` | 12 | 12px | Cards, dialogs |
+| `medium` | 12 | 12px | Cards |
 | `large` | 16 | 16px | FAB, extended FAB, nav drawer |
 | `large-increased` | 20 | 20px | (Expressive update) |
-| `extra-large` | 28 | 28px | Bottom sheets, side sheets |
+| `extra-large` | 28 | 28px | Dialogs, bottom sheets, side sheets |
 | `extra-large-increased` | 32 | 32px | (Expressive update) |
 | `extra-extra-large` | 48 | 48px | (Expressive update) |
 | `full` | — | 9999px | Buttons, badges, pills, sliders |
@@ -219,7 +219,7 @@ In the M3 Expressive update, components can morph between shapes on interaction:
 - Selected states can change shape
 - Loading indicators use shape morphing to show progress
 
-**Web availability**: Shape morphing is currently only available in Jetpack Compose. Web implementation is not yet available. For web, use CSS transitions on `border-radius` as an approximation.
+**Platform notes**: Shape morphing is **not** in `@material/web` ([Material Web is maintenance-only; Expressive not on Web](https://m3.material.io/develop/web)). **Jetpack Compose** is where Google documents expressive shape/motion behavior for Android. **Flutter:** check current Material 3 / expressive docs for your SDK. **Web:** approximate with CSS transitions on `border-radius`.
 
 ## Elevation
 
@@ -292,7 +292,7 @@ MD3 Expressive (May 2025) introduced spring-based motion physics for component a
 
 - Springs have no fixed duration — they respond dynamically to input
 - Two schemes: **standard** (utilitarian) and **expressive** (bouncy)
-- Currently available in Jetpack Compose; web uses easing/duration fallback
+- **Jetpack Compose** exposes motion schemes / spring-oriented APIs in current Material3 (see `MotionScheme` and your BOM). **MDC-Android** may differ by version. **Web:** Material Web does not implement Expressive motion physics — use easing/duration or custom CSS/JS. **Flutter:** check your Flutter/Material version for parity.
 
 ### Easing and Duration (Transitions)
 

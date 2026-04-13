@@ -4,7 +4,7 @@ Complete reference for Material Design 3's color system: roles, tonal palettes, 
 
 ## Color Roles
 
-MD3 defines 29+ color roles organized into groups. Every role exists as a CSS custom property: `--md-sys-color-{role-name}`.
+MD3 defines 29+ color roles organized into groups. **Jetpack Compose:** map to `MaterialTheme.colorScheme` (e.g. `primary`, `onPrimary`). **Web:** each role exists as a CSS custom property `--md-sys-color-{role-name}`.
 
 ### Accent Colors
 
@@ -108,7 +108,7 @@ MD3 generates colors from a **seed color** through the tonal palette system:
 
 1. A **seed color** (hex value) is chosen
 2. The seed generates **5 tonal palettes**: Primary, Secondary, Tertiary, Neutral, Neutral-Variant
-3. Each palette has **13 tonal values**: 0, 10, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 95, 98, 99, 100
+3. Each palette uses tonal stops along **0–100** (commonly 16 key stops: 0, 10, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 95, 98, 99, 100)
 4. Color roles are mapped to specific tonal values depending on light or dark scheme
 
 ### Tonal Value Mapping (Light Scheme)
@@ -172,7 +172,7 @@ Colors must only be used in their intended pairs to ensure accessible contrast:
 Dynamic color creates personalized color schemes from external sources:
 
 ### User-Generated (Wallpaper)
-The system extracts a seed color from the user's wallpaper and generates a full scheme. Available on Android 12+ and supported web implementations.
+The OS extracts a seed color from the user's wallpaper and generates a scheme. **Android:** `dynamicLightColorScheme` / `dynamicDarkColorScheme` on **Android 12+ (API 31+)**. **Web:** there is **no** browser wallpaper dynamic-color API equivalent; you can derive a seed from **content** (e.g. images) with libraries, but that is app-specific, not system wallpaper theming.
 
 ### Content-Based
 A seed color is extracted from in-app content (album art, book cover, etc.) to create a contextual scheme.

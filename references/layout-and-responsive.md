@@ -2,6 +2,16 @@
 
 Reference for Material Design 3's layout system: breakpoints, canonical layouts, and responsive implementation.
 
+## Jetpack Compose and Android
+
+The **breakpoint table** below is a **design** reference. In **Jetpack Compose**, prefer **`calculateWindowSizeClass`** (`androidx.compose.material3:material3-window-size-class`) and/or **`androidx.compose.material3.adaptive`** APIs (e.g. `currentWindowAdaptiveInfo`, list-detail scaffolds) instead of hand-rolling raw `BoxWithConstraints` width checks everywhere.
+
+**Edge-to-edge:** Use **`enableEdgeToEdge()`** on your `Activity` (AndroidX) when you draw behind the system bars. Apply **`WindowInsets`** (`Modifier.statusBarsPadding()`, `navigationBarsPadding()`, **`imePadding()`**, `displayCutoutPadding()`, etc.) and **`Scaffold`** `contentWindowInsets` so content and **IME** behave correctly.
+
+**Foldables:** Use **`WindowInfoTracker`**, **`FoldingFeature`**, or Jetpack WindowManager APIs — see the foldable section below; verify APIs against your dependency versions.
+
+---
+
 ## Window Size Classes
 
 MD3 defines 5 breakpoint classes:
@@ -14,7 +24,9 @@ MD3 defines 5 breakpoint classes:
 | Large | 1200–1599dp | Desktop | 12 |
 | Extra-large | 1600dp+ | Ultra-wide, large desktop | 12 |
 
-### CSS Media Queries
+### CSS Media Queries (web)
+
+Use these for **CSS layouts**. **Compose** apps should use window size classes / adaptive APIs rather than duplicating this logic only in CSS.
 
 ```css
 /* Compact (default — mobile-first) */

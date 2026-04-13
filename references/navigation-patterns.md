@@ -2,6 +2,40 @@
 
 Guide for choosing and implementing Material Design 3 navigation components.
 
+## Jetpack Compose (primary)
+
+Use **`androidx.compose.material3`**: `NavigationBar`, `NavigationRail`, `NavigationDrawerItem`, `ModalNavigationDrawer`, `DismissibleNavigationDrawer`, `PermanentNavigationDrawer`, `NavigationBarItem`, `NavigationRailItem`, top app bars (`TopAppBar`, `CenterAlignedTopAppBar`, `LargeTopAppBar`, expressive variants per BOM), and **`Scaffold`** (`bottomBar`, `floatingActionButton`, `snackbarHost`).
+
+Wire destinations with **Navigation Compose** (`NavHost`, `composable`, `rememberNavController`). For **adaptive** UIs, use **`calculateWindowSizeClass`**, **`androidx.compose.material3.adaptive`**, or **`currentWindowAdaptiveInfo`** / **`NavigableListDetailPaneScaffold`** (names and packages depend on your BOM — check [Android Developers](https://developer.android.com/jetpack/androidx/releases/compose-material3)).
+
+```kotlin
+// Conceptual — adapt routes and selection to your app
+Scaffold(
+    bottomBar = {
+        NavigationBar {
+            destinations.forEach { dest ->
+                NavigationBarItem(
+                    selected = currentRoute == dest.route,
+                    onClick = { navController.navigate(dest.route) },
+                    icon = { Icon(dest.icon, contentDescription = dest.label) },
+                    label = { Text(dest.label) }
+                )
+            }
+        }
+    }
+) { innerPadding ->
+    NavHost(
+        navController = navController,
+        startDestination = "home",
+        modifier = Modifier.padding(innerPadding)
+    ) { /* composable routes */ }
+}
+```
+
+**Web (limited):** The HTML/`@material/web` sections below remain useful for token-backed sites; [Material Web is maintenance-only](https://m3.material.io/develop/web).
+
+---
+
 ## Navigation Component Selection
 
 ### Decision Tree

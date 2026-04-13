@@ -1,12 +1,11 @@
 ---
 name: material-3
 description: >
-  Implement Google's Material Design 3 (Material You) UI system. Covers design tokens
-  (color, typography, shape, elevation, motion), 30+ components, responsive layout,
-  dynamic color theming, and accessibility. Supports web (@material/web), Flutter,
-  and Jetpack Compose. Use when: "material design", "MD3", "material you",
-  "material component", "material theme", "@material/web", "md3 button",
-  "material card", "material navigation".
+  Implement Google's Material Design 3 (Material You) UI system. Primary: Jetpack Compose
+  Material3 (MaterialTheme, components, adaptive layout). Also Flutter and limited web
+  (@material/web, maintenance mode). Covers tokens, 30+ components, layout, theming,
+  M3 Expressive (platform matrix), and accessibility. Use when: "material design", "MD3",
+  "material you", "Jetpack Compose", "MaterialTheme", "material component", "md3 button".
 user-invokable: true
 argument-hint: "[component|theme|layout|scaffold|audit] [description or URL]"
 ---
@@ -46,16 +45,16 @@ Data display             → See references/component-catalog.md § Data Display
 
 **What platform?**
 ```
-Web (vanilla JS)         → @material/web components + CSS custom properties
+Jetpack Compose          → Primary: androidx.compose.material3, MaterialTheme, references/*
+Flutter                  → useMaterial3: true in ThemeData, ColorScheme.fromSeed()
+Web (vanilla JS)         → @material/web (limited; maintenance mode) + CSS custom properties
 Web (React/Vue/Svelte)   → CSS custom properties + wrapper components (no official React lib)
-Web (CSS-only)           → Use MD3 token values as CSS custom properties (no <md-*> elements)
-Flutter                  → material3: true in ThemeData, ColorScheme.fromSeed()
-Jetpack Compose          → MaterialTheme with Material3 dependencies
+Web (CSS-only)           → MD3 token values as CSS custom properties (no <md-*> elements)
 ```
 
 ## Design Token System
 
-All MD3 tokens use the `md.sys` namespace. On the web, these map to CSS custom properties:
+All MD3 tokens use the `md.sys` namespace. **Jetpack Compose** maps roles to `MaterialTheme.colorScheme`, `MaterialTheme.typography`, and `MaterialTheme.shapes` (same semantic roles as the spec). **On the web**, these map to CSS custom properties (`--md-sys-*`):
 
 ### Color Tokens (`--md-sys-color-*`)
 | Token | Purpose |
@@ -105,10 +104,10 @@ Full details: `references/typography-and-shape.md`
 | `none` | 0dp | — |
 | `extra-small` | 4dp | Chips, snackbars |
 | `small` | 8dp | Text fields, menus |
-| `medium` | 12dp | Cards, dialogs |
+| `medium` | 12dp | Cards |
 | `large` | 16dp | FABs, navigation drawer |
 | `large-increased` | 20dp | (Expressive) |
-| `extra-large` | 28dp | Bottom sheets |
+| `extra-large` | 28dp | Dialogs, bottom sheets |
 | `extra-large-increased` | 32dp | (Expressive) |
 | `extra-extra-large` | 48dp | (Expressive) |
 | `full` | 9999px | Buttons, chips, badges |
@@ -186,11 +185,32 @@ CSS easing values:
 | Toolbar | — | — | Navigation |
 | List | `md-list`, `md-list-item` | One-line, Two-line, Three-line | Data Display |
 
-**Note:** Components marked with `—` for web element don't have @material/web implementations yet. Use CSS custom properties with standard HTML for these.
+**Note:** Components marked with `—` for web element don't have @material/web implementations yet. Use CSS custom properties with standard HTML for these. **Compose** mappings and examples live in `references/component-catalog.md`.
 
 Full component details with code examples: `references/component-catalog.md`
 
-## Web Implementation with @material/web
+## Jetpack Compose (primary)
+
+Use **`androidx.compose.material3`** with `MaterialTheme` and Material 3 composables (`Scaffold`, `Button`, `NavigationBar`, top app bars, etc.).
+
+- **Theming**: `MaterialTheme(colorScheme = …, typography = …, shapes = …)`. Prefer `dynamicLightColorScheme` / `dynamicDarkColorScheme` on **Android 12+ (API 31+)** when dynamic color is desired; otherwise `lightColorScheme` / `darkColorScheme` or generated theme code from Material Theme Builder.
+- **Adaptive UI**: Window size classes, list-detail and supporting-pane layouts, foldables — see `references/layout-and-responsive.md` and `references/navigation-patterns.md`.
+- **Edge-to-edge & insets**: Lay out content with `WindowInsets` / scaffold padding so bars and IME behave correctly — see `references/layout-and-responsive.md`.
+- **Experimental APIs**: Some Material 3 APIs require `@OptIn(ExperimentalMaterial3Api::class)` or expressive opt-ins; match your BOM and compiler.
+
+```kotlin
+MaterialTheme(
+    colorScheme = colorScheme, // from dynamicLightColorScheme / lightColorScheme / etc.
+    typography = Typography(),
+    shapes = Shapes(),
+) {
+    // M3 content — prefer references for Scaffold, navigation, text fields
+}
+```
+
+## Web (limited): @material/web
+
+**Important:** Per [Material Design 3 for Web](https://m3.material.io/develop/web), **Material Web Components are in maintenance mode** and **M3 Expressive is not implemented on Web**. Use `@material/web` for token-backed web UIs when appropriate, but do not treat it as equivalent to Compose for current Expressive features.
 
 ### Setup
 
@@ -481,7 +501,7 @@ More patterns: `references/navigation-patterns.md`, `references/layout-and-respo
 - **Import all of @material/web**: Always import individual component modules. Barrel imports include every component and destroy bundle size.
 - **Use `border-radius` directly**: Use shape tokens (`var(--md-sys-shape-corner-medium)`) so shapes stay consistent with theming.
 - **Use shadows for elevation by default**: MD3 communicates elevation through tonal surface color, not shadows. Only add shadows when elements need extra separation from busy backgrounds.
-- **Apply frontend-design "avoid Roboto" rule**: Roboto Flex is the intended MD3 typeface. It's correct here. Replace it only if intentionally customizing the type scale.
+- **Apply frontend-design "avoid Roboto" rule**: On **Android**, **Roboto** is the default Material typeface; **web** often uses Roboto or Roboto Flex with MD3 tokens. Replace only when intentionally customizing the type scale.
 - **Assume SSR compatibility**: `@material/web` uses Web Components (custom elements) which require JavaScript to render. They won't produce meaningful HTML in SSR without additional hydration strategies.
 - **Ignore foldables and large screens**: MD3 is designed for all screen sizes. Don't ship phone-only layouts — use canonical layouts, multi-pane at 600dp+, and test on foldable/tablet emulators. Place no interactive content across the fold/hinge.
 - **Stretch content to fill wide screens**: On Large (1200dp+) and Extra-large (1600dp+) windows, constrain content to a max width (840–1040dp). Endless-width text lines are unreadable.
@@ -499,15 +519,7 @@ MaterialApp(
 ```
 
 ### Jetpack Compose
-```kotlin
-MaterialTheme(
-    colorScheme = dynamicLightColorScheme(context), // or dynamicDarkColorScheme
-    typography = Typography(),
-    shapes = Shapes(),
-) {
-    // Content
-}
-```
+See **[Jetpack Compose (primary)](#jetpack-compose-primary)** above. Use `LocalContext.current` with `dynamicLightColorScheme` / `dynamicDarkColorScheme` only when `Build.VERSION.SDK_INT >= Build.VERSION_CODES.S` and dynamic color is enabled; otherwise supply static light/dark schemes.
 
 ### Component Name Mapping
 | Concept | Web | Flutter | Compose |
@@ -520,15 +532,20 @@ MaterialTheme(
 
 ## M3 Expressive (May 2025)
 
-The Expressive update adds visual richness while maintaining usability:
-- **Spring-based motion**: Components now use spring physics instead of fixed easing curves. More natural and responsive. (Easing/duration still used for transitions.)
-- **Emphasized typography**: 15 new emphasized type styles for selection states, actions, and headlines. Higher weight than baseline.
-- **Shape morphing**: Components can morph between shapes on interaction (press, select). Currently Compose-only; web unavailable.
-- **New button sizes**: XS, S (default), M, L, XL with toggle (selection) support.
-- **New corner radii**: large-increased (20dp), extra-large-increased (32dp), extra-extra-large (48dp).
-- **3 contrast levels**: Standard, medium, and high contrast — user-controlled.
+The Expressive update adds visual richness while maintaining usability. **Availability differs by platform** — do not assume one stack implements everything.
 
-When targeting web, note that many Expressive features (shape morph, spring physics) aren't yet available in @material/web. Use the CSS easing/duration tokens as fallback.
+| Capability | Jetpack Compose | Flutter | Web (`@material/web`) |
+|------------|-----------------|---------|------------------------|
+| Spring / motion physics | Supported in Material 3 (see `MotionScheme`, expressive APIs per BOM) | Varies by Flutter Material version | **Not** in Material Web; use easing/duration or custom motion |
+| Emphasized typography | Via theme / type scale | Via theme | Token/CSS only; no full Expressive component set |
+| Shape morphing | Compose-first in Google’s expressive rollout | Check current Flutter docs | **Not** in `@material/web` |
+| New button sizes (XS–XL), toggle | Follow Compose Material3 components | Follow Flutter MD3 | Height/CSS approximations only |
+| Extra corner tokens (e.g. large-increased) | `MaterialTheme.shapes` / tokens | Theme shapes | CSS `--md-sys-shape-*` |
+| 3 contrast levels | Scheme builders / system | Plugins / manual | `SchemeContent` contrast parameter in JS utilities |
+
+**Web:** [Material Web is maintenance-only; M3 Expressive is not on Web](https://m3.material.io/develop/web). Use CSS easing/duration tokens as fallback for motion, not spring parity.
+
+**Legacy easing/duration** remains valid for **transitions** (enter/exit/shared-axis) where the spec still references them; see the Motion table below.
 
 ## MD3 Compliance Audit
 
@@ -541,16 +558,16 @@ When invoked with `audit` as the argument (e.g., `/material-3 audit`), or when a
 
 | Category | What to check |
 |----------|--------------|
-| **Color tokens** | Uses `--md-sys-color-*` tokens (not hardcoded hex). Proper tonal pairing (on-X with X). Dark mode support. No arbitrary color combinations that break contrast. |
-| **Typography** | Uses MD3 type scale tokens. Correct scale usage (Display for heroes, Body for text, Label for buttons). Consistent font family. |
-| **Shape** | Uses shape tokens for border-radius. Correct token per component (full for buttons, medium for cards). No raw pixel values. |
-| **Elevation** | Tonal surface colors used instead of shadows. Correct elevation levels per component. Hover/focus raises by 1 level. |
-| **Components** | Uses `@material/web` elements or correctly implements MD3 component specs. Correct variants for context. Proper slot usage. |
-| **Layout** | Responsive breakpoints match MD3 (compact/medium/expanded/large/extra-large). Uses canonical layouts where appropriate. Proper margins and spacing. Multi-pane layouts on medium+ screens. Content constrained to readable widths on large screens. Foldable hinge avoidance if targeting foldables. |
-| **Navigation** | Correct nav component for screen size (bar on mobile, rail on tablet, drawer on desktop). Responsive transitions. Hover states for pointer devices on large screens. |
-| **Motion** | Transitions use MD3 easing/duration tokens. Appropriate easing type for transition direction (enter/exit/persist). |
-| **Accessibility** | Color contrast meets 3:1 minimum (MD3 built-in). Proper ARIA labels. Keyboard navigation. Focus indicators. |
-| **Theming** | Theme is applied via CSS custom properties. Supports dark mode. Dynamic color ready (tokens not hardcoded). Component-level overrides use proper token names. |
+| **Color tokens** | **Web:** `--md-sys-color-*` / generated CSS. **Compose:** `MaterialTheme.colorScheme` roles (no arbitrary `Color(...)` for surfaces without reason). Proper tonal pairing (`onX` on `X`). Dark theme. **Flutter:** `ColorScheme` roles. |
+| **Typography** | MD3 type scale: **Compose** `MaterialTheme.typography`; **web** typescale tokens; correct roles (Display, Headline, Title, Body, Label). |
+| **Shape** | **Compose** `MaterialTheme.shapes` / component `Shape`; **web** `var(--md-sys-shape-*)`. Buttons: full; cards: medium; avoid magic numbers. |
+| **Elevation** | Tonal elevation (`Surface` tonal/shadow as appropriate). **Web:** hover/focus where relevant. |
+| **Components** | **Compose:** Material3 composables (`Button`, `Scaffold`, etc.). **Web:** `@material/web` or spec-aligned HTML/CSS. Correct variants. |
+| **Layout** | Canonical layouts; **Compose** window size class / adaptive APIs; readable max width on large widths; foldable hinge avoidance. |
+| **Navigation** | Bar / rail / drawer / drawers+**Compose** `NavHost` patterns per size class; predictive back where applicable. |
+| **Motion** | **Compose** `MotionScheme` / expressive APIs when used; transitions may still use easing/duration. **Web:** CSS motion tokens fallback. |
+| **Accessibility** | MD3 roles help, but **verify contrast**: UI components often need **3:1** for large text/borders and **4.5:1** for normal text (WCAG 2.x). TalkBack/semantics (Compose), focus order, touch targets (~48dp). **Web:** ARIA, keyboard. |
+| **Theming** | **Compose:** `MaterialTheme` + light/dark/dynamic as designed. **Web:** CSS custom properties on `:root` or subtree. **Flutter:** `ThemeData` + `ColorScheme`. |
 
 3. **Generate the report**:
 
@@ -591,39 +608,30 @@ Overall Score: [X/100]
 
 ### Audit Methods
 
-**For a live URL** (browser tools available):
-- Navigate to the page with `mcp__claude-in-chrome__navigate`
-- Read the page DOM with `mcp__claude-in-chrome__read_page`
-- Extract CSS custom properties with `mcp__claude-in-chrome__javascript_tool`
-- Check computed styles for MD3 token usage
-- Test responsive behavior by resizing with `mcp__claude-in-chrome__resize_window`
-- Screenshot at different breakpoints
+**For a live URL** (browser or devtools):
+- Inspect computed styles and CSS variables (`--md-sys-*`)
+- Resize viewport or use responsive mode for breakpoints
+- Capture screenshots at key widths if helpful
 
 **For source code** (file paths provided):
-- Read HTML/JSX/template files for component usage
-- Read CSS/SCSS files for token usage and hardcoded values
-- Check imports for @material/web components
-- Search for hardcoded colors, border-radius values, box-shadows
-- Verify responsive breakpoints in media queries
+- **Compose/Kotlin:** `.kt` files — `MaterialTheme`, composables, `Color(0x…)` abuse, hard-coded `Dp`, missing `Modifier.semantics` where needed
+- **Flutter:** `.dart` — `ThemeData`, `ColorScheme`
+- **Web:** HTML/JSX/Vue/Svelte; CSS/SCSS for tokens
+- Check **web** imports for `@material/web` vs `@material/mdc-*` (MD2)
 
-**Quick checks** (grep patterns for common violations):
+**Quick checks** (adapt paths to your stack):
 ```
-# Hardcoded colors (should use tokens)
+# Web: hardcoded colors
 grep -rn '#[0-9a-fA-F]\{3,8\}' --include='*.css' --include='*.scss'
-grep -rn 'rgb\(|rgba\(' --include='*.css' --include='*.scss'
 
-# Raw border-radius (should use shape tokens)
-grep -rn 'border-radius:' --include='*.css' | grep -v 'var(--md-sys-shape'
+# Compose: raw Color(...) audits (sample — tune for your codebase)
+grep -rn 'Color(0x' --include='*.kt'
 
-# Raw box-shadow (MD3 uses tonal elevation)
-grep -rn 'box-shadow:' --include='*.css'
-
-# MD2 imports (should be @material/web)
+# MD2 on web
 grep -rn '@material/mdc-' --include='*.js' --include='*.ts'
-
-# Missing dark mode
-grep -rn 'prefers-color-scheme' --include='*.css'
 ```
+
+**Browser automation** (if your environment exposes MCP browser tools): navigate, snapshot DOM/CSS variables, resize for breakpoints — optional, not required.
 
 ### Scoring Guide
 
@@ -637,9 +645,9 @@ Status thresholds: **pass** (7+), **warn** (4-6), **fail** (0-3)
 
 ## Reference Documents
 
-- `references/color-system.md` — Complete color role catalog, tonal palettes, dynamic color, light/dark scheme mapping
-- `references/typography-and-shape.md` — Type scale values, shape corner scale, elevation levels, motion tokens
-- `references/component-catalog.md` — All 30+ components with web element names, attributes, code examples, a11y notes
-- `references/navigation-patterns.md` — Which navigation component to use, responsive nav transitions
-- `references/layout-and-responsive.md` — Breakpoints, canonical layouts, CSS Grid implementation
-- `references/theming-and-dynamic-color.md` — Theme generation, brand color integration, dark mode, runtime switching
+- `references/color-system.md` — Color roles, tonal palettes, dynamic color, Compose + CSS mapping
+- `references/typography-and-shape.md` — Type scale, shape corners, elevation, motion, Expressive notes
+- `references/component-catalog.md` — Components: Compose + `@material/web` where applicable
+- `references/navigation-patterns.md` — Navigation selection, Compose-first adaptive patterns
+- `references/layout-and-responsive.md` — Breakpoints, canonical layouts, insets, foldables
+- `references/theming-and-dynamic-color.md` — Theming: Compose first, then Flutter and web

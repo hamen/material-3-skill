@@ -1,6 +1,6 @@
 # MD3 Component Catalog
 
-Complete reference for all Material Design 3 components with web element names, attributes, code examples, and accessibility notes.
+Complete reference for Material Design 3 components. **Primary mappings:** Jetpack Compose (`androidx.compose.material3`) where most users ship UIs today; **web** uses `@material/web` element names and imports — [Material Web is maintenance-only](https://m3.material.io/develop/web).
 
 ## Actions
 
@@ -581,6 +581,23 @@ Two types:
 
 **Customize**: `--md-outlined-text-field-container-shape`, `--md-outlined-text-field-focus-outline-color`, `--md-filled-text-field-container-color`
 
+#### Jetpack Compose
+
+Use **`OutlinedTextField`** / **`TextField`** from **`androidx.compose.material3`**. Prefer **state-based** APIs (`TextFieldState`, `rememberTextFieldState()`) when targeting current Material3 releases — see the [package overview](https://developer.android.com/reference/kotlin/androidx/compose/material3/package-summary). Map labels, supporting text, and error state to MD3 roles (`MaterialTheme.colorScheme`, `TextFieldDefaults`).
+
+```kotlin
+// Illustrative — API names vary slightly by Material3 version
+val state = rememberTextFieldState("")
+
+OutlinedTextField(
+    state = state,
+    label = { Text("Email") },
+    supportingText = { if (isError) Text("Invalid email") },
+    isError = isError,
+    modifier = Modifier.fillMaxWidth()
+)
+```
+
 ### Date Picker
 **No @material/web element yet.** Three configurations:
 - **Docked**: Inline calendar attached to input
@@ -603,6 +620,8 @@ Two types:
 | Small | 64dp | Left | Elevate on scroll |
 | Medium | 112dp | Left, bottom | Collapse to small on scroll |
 | Large | 152dp | Left, bottom | Collapse to small on scroll |
+
+**Jetpack Compose:** `TopAppBar`, `CenterAlignedTopAppBar`, `MediumTopAppBar`, `LargeTopAppBar`, and expressive variants (e.g. large flexible) may require **`@OptIn(ExperimentalMaterial3ExpressiveApi::class)`** depending on BOM — check your `material3` version.
 
 ```html
 <header class="md3-top-app-bar md3-top-app-bar--small">

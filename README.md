@@ -7,6 +7,7 @@ A comprehensive [Claude Code](https://claude.ai/claude-code) skill for implement
 ## Table of contents
 
 - [What it does](#what-it-does)
+- [Platform support](#platform-support)
 - [How this skill was built](#how-this-skill-was-built)
   - [Sources](#sources)
   - [Process](#process)
@@ -18,48 +19,60 @@ A comprehensive [Claude Code](https://claude.ai/claude-code) skill for implement
   - [Scaffold an app](#scaffold-an-app)
   - [Audit MD3 compliance](#audit-md3-compliance)
 - [What's included](#whats-included)
+- [Contributing](#contributing)
 - [License](#license)
 
 ## What it does
 
-- Guides Claude in generating **MD3-compliant UI code** with correct design tokens, components, theming, layout, and accessibility
-- Covers **30+ components** with web element names, attributes, and code examples
-- Supports **web** (`@material/web`), **Flutter**, and **Jetpack Compose**
-- Includes an **MD3 compliance audit** mode that scores apps across 10 categories
-- Covers the **M3 Expressive** update (May 2025): spring motion, emphasized typography, shape morphing
+- Guides Claude in generating **MD3-compliant UI** with correct design tokens, components, theming, layout, and accessibility
+- **Primary focus: Jetpack Compose** — `MaterialTheme`, Material 3 composables, adaptive layouts, edge-to-edge/insets, and current Compose Material3 patterns
+- Also covers **Flutter** (`useMaterial3`, `ColorScheme.fromSeed`, etc.) at a secondary level
+- **Web (`@material/web`)** is documented as a **limited** path: [Material Web is in maintenance mode](https://m3.material.io/develop/web) and **M3 Expressive is not implemented on Web**; use tokens and components knowing the ecosystem is not receiving active feature work
+- Covers **30+ components** with Compose-oriented mappings plus web element names where applicable, attributes, and examples in `references/component-catalog.md`
+- Includes an **MD3 compliance audit** mode that scores apps across 10 categories (works for Compose/Kotlin, Flutter/Dart, and web/CSS)
+- Covers **M3 Expressive** (May 2025) with an explicit **per-platform** matrix — see [SKILL.md](SKILL.md) and [references/typography-and-shape.md](references/typography-and-shape.md)
+
+## Platform support
+
+| Platform | Role in this skill | Notes |
+|----------|---------------------|--------|
+| **Jetpack Compose** | **Primary** | Best match for current Material 3 implementation APIs, Expressive motion where available, adaptive navigation |
+| **Flutter** | Secondary | `ThemeData(useMaterial3: true)`, `ColorScheme.fromSeed`, community packages for dynamic color |
+| **Web** | Limited | `@material/web` + CSS custom properties; maintenance mode; no full Expressive parity |
 
 ## How this skill was built
 
-This skill was created collaboratively between a human and [Claude Code](https://claude.ai/claude-code) (Anthropic's coding agent). The information in the skill files is **distilled from publicly available sources** — it is not original design system documentation, but a curated reference assembled from what exists on the web and in Claude's training data.
+This skill was created collaboratively between a human and [Claude Code](https://claude.ai/claude-code) (Anthropic's coding agent). The information in the skill files is **distilled from publicly available sources** — it is not original design system documentation, but a curated reference assembled from official docs, library references, and training data.
 
 ### Sources
 
-All design token values, component specs, layout breakpoints, color roles, typography scales, and implementation patterns in this skill were gathered from:
+Design token values, component specs, layout breakpoints, color roles, typography scales, and implementation patterns were gathered from:
 
-- **[m3.material.io](https://m3.material.io/)** — Google's official Material Design 3 documentation site, browsed live using Claude Code's Chrome browser automation tools
-- **Claude's training data** — which includes publicly available Material Design documentation, `@material/web` API references, Flutter and Jetpack Compose documentation, and community guides published before the training cutoff
-- **[@material/web](https://github.com/material-components/material-web) source code** — the official web component library for MD3, used to verify element names, attributes, and import paths
+- **[m3.material.io](https://m3.material.io/)** — Google's official Material Design 3 documentation
+- **[Android Developers — Material Design 3 in Compose](https://developer.android.com/develop/ui/compose/designsystems/material3)** and **AndroidX Compose Material3** API references
+- **Claude's training data** — publicly available Material Design documentation, Flutter and Jetpack Compose documentation, `@material/web` references, and community guides
+- **[@material/web](https://github.com/material-components/material-web)** — used to verify web component element names, attributes, and import paths where web guidance is included
 
 ### Process
 
-1. **Planning phase** — We outlined the skill structure: a main `SKILL.md` covering philosophy, decision trees, token overview, component tables, implementation patterns, and an audit procedure, plus 6 focused reference files.
+1. **Planning phase** — Main `SKILL.md` plus focused reference files under `references/`.
 
-2. **Live site research** — Because m3.material.io is a JavaScript-rendered single-page application (standard `fetch`/`curl` returns an empty shell), we used Claude Code's **Chrome browser automation** (via MCP tools) to navigate the live site, read rendered content, take screenshots, and click through tabbed sections. This was essential for verifying current token values, the full component list, elevation levels, color roles, and the M3 Expressive update details (May 2025) that may not yet be reflected in training data.
+2. **Live site research** — m3.material.io is often a JavaScript-rendered SPA; browser automation helps verify current token values, component lists, and Expressive updates.
 
-3. **Cross-referencing with training data** — The live site content was cross-referenced with Claude's existing knowledge of Material Design 3 to fill in implementation details, code examples, CSS custom property names, Flutter/Compose APIs, and patterns that the site covers at a conceptual level but doesn't always spell out as copy-paste code.
+3. **Cross-referencing** — Official Compose and Flutter docs fill in copy-paste APIs; web sections stay secondary.
 
-4. **Distillation into skill format** — The raw information was condensed into the skill's markdown files. Token values were organized into lookup tables. Component specs were normalized into a consistent template (element name, import path, attributes, code example, customization properties, accessibility notes). Layout and navigation patterns were turned into complete, working code examples.
+4. **Distillation** — Token tables, component templates, and layout examples normalized for consistency.
 
-5. **Audit system design** — We designed a 10-category MD3 compliance audit (color, typography, shape, elevation, components, layout, navigation, motion, accessibility, theming) that can analyze both source code and live applications, producing a scored report with specific remediation steps.
+5. **Audit system** — 10-category MD3 compliance audit adaptable to Compose, Flutter, or web source trees.
 
 ### What this means for accuracy
 
-The skill represents a **best-effort distillation** of Material Design 3 as of early 2025. Because it was assembled from public web sources and training data:
+The skill is a **best-effort distillation** and may drift as Google updates the spec.
 
-- Token values and component specs reflect what was published on m3.material.io at the time of creation
-- Code examples use `@material/web` APIs that were current at the time — some components (marked with `—` in the catalog) don't have official web component implementations yet
-- The M3 Expressive update (spring motion, emphasized typography, shape morphing) is covered, but some features (like shape morphing on web) are noted as unavailable on certain platforms
-- If Google updates the spec, this skill may drift — contributions and corrections are welcome
+- **Compose** guidance is prioritized for currency; prefer official Android docs for exact API signatures and BOM versions.
+- **Web**: Material Web is [in maintenance mode](https://m3.material.io/develop/web); M3 Expressive is **not** on Web. Examples may lag; verify against the [material-web](https://github.com/material-components/material-web) repo.
+- **M3 Expressive** (motion, emphasized type, shape morphing, new radii) varies by platform — see the Expressive sections in [SKILL.md](SKILL.md).
+- Contributions and corrections are welcome.
 
 ## Installation
 
@@ -105,19 +118,24 @@ ln -s /path/to/material-3-skill ~/.claude/skills/material-3
 /material-3 audit [URL or file path]
 ```
 
-The audit scores your app across 10 categories (color tokens, typography, shape, elevation, components, layout, navigation, motion, accessibility, theming) and produces a detailed report with specific fixes.
+The audit scores your app across 10 categories (color tokens, typography, shape, elevation, components, layout, navigation, motion, accessibility, theming) and produces a detailed report with specific fixes. Targets may be **Compose/Kotlin**, **Flutter**, or **web** — see [SKILL.md](SKILL.md) for per-stack checks.
 
 ## What's included
 
 | File | Description |
 |------|-------------|
-| `SKILL.md` | Main skill: philosophy, decision trees, token overview, component table, web implementation patterns, audit procedure |
-| `references/color-system.md` | All 29+ color roles, tonal palettes, dynamic color, baseline scheme CSS |
-| `references/component-catalog.md` | All 30+ components with `@material/web` elements, attributes, code examples |
-| `references/theming-and-dynamic-color.md` | Theme generation, brand colors, dark mode, runtime switching |
-| `references/typography-and-shape.md` | Type scale (30 styles), shape corner tokens, elevation levels, motion tokens |
-| `references/navigation-patterns.md` | Nav component selection, responsive transitions, complete responsive shell |
-| `references/layout-and-responsive.md` | 5 breakpoints, 3 canonical layouts, CSS Grid implementation |
+| `SKILL.md` | Main skill: philosophy, decision trees, token overview, component table, Compose-first notes, limited web patterns, audit procedure |
+| `references/color-system.md` | Color roles, tonal palettes, dynamic color, baseline schemes (Compose + CSS) |
+| `references/component-catalog.md` | Components with Compose mappings and `@material/web` where applicable |
+| `references/theming-and-dynamic-color.md` | Theme generation, brand colors, dark mode — Compose first, then Flutter and web |
+| `references/typography-and-shape.md` | Type scale, shape, elevation, motion — including Expressive platform notes |
+| `references/navigation-patterns.md` | Nav selection, Compose-first patterns, responsive shell |
+| `references/layout-and-responsive.md` | Breakpoints, canonical layouts, edge-to-edge/insets, foldables |
+| `CONTRIBUTING.md` | How to contribute without drifting the Compose-first story |
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for platform hierarchy (Compose-first), Expressive rules, and a PR checklist so documentation stays consistent.
 
 ## License
 
