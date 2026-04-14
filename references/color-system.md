@@ -4,14 +4,14 @@ Complete reference for Material Design 3's color system: roles, tonal palettes, 
 
 ## Color Roles
 
-MD3 defines 29+ color roles organized into groups. **Jetpack Compose:** map to `MaterialTheme.colorScheme` (e.g. `primary`, `onPrimary`). **Web:** each role exists as a CSS custom property `--md-sys-color-{role-name}`.
+MD3 defines 29+ color roles organized into groups. In **Jetpack Compose**, these map to `MaterialTheme.colorScheme` properties (e.g. `MaterialTheme.colorScheme.primary`, `.onPrimary`). The spec uses `md.sys.color.*` token names.
 
 ### Accent Colors
 
 Three accent groups (primary, secondary, tertiary) each have 4 roles:
 
-| Role | CSS Token | Purpose |
-|------|-----------|---------|
+| Role | Token | Purpose |
+|------|-------|---------|
 | Primary | `--md-sys-color-primary` | High-emphasis fills, text, icons against surface |
 | On Primary | `--md-sys-color-on-primary` | Text and icons on primary |
 | Primary Container | `--md-sys-color-primary-container` | Standout fill for key components (FAB, etc.) |
@@ -34,8 +34,8 @@ Three accent groups (primary, secondary, tertiary) each have 4 roles:
 
 Static colors that don't change with dynamic color schemes:
 
-| Role | CSS Token | Purpose |
-|------|-----------|---------|
+| Role | Token | Purpose |
+|------|-------|---------|
 | Error | `--md-sys-color-error` | Attention-grabbing color for urgent elements |
 | On Error | `--md-sys-color-on-error` | Text and icons on error |
 | Error Container | `--md-sys-color-error-container` | Error container fill |
@@ -43,8 +43,8 @@ Static colors that don't change with dynamic color schemes:
 
 ### Surface Colors
 
-| Role | CSS Token | Purpose |
-|------|-----------|---------|
+| Role | Token | Purpose |
+|------|-------|---------|
 | Surface | `--md-sys-color-surface` | Default background color |
 | On Surface | `--md-sys-color-on-surface` | Text and icons on any surface |
 | On Surface Variant | `--md-sys-color-on-surface-variant` | Lower-emphasis text/icons on surface |
@@ -64,16 +64,16 @@ Static colors that don't change with dynamic color schemes:
 
 For elements that contrast against the surrounding UI (e.g., snackbars):
 
-| Role | CSS Token | Purpose |
-|------|-----------|---------|
+| Role | Token | Purpose |
+|------|-------|---------|
 | Inverse Surface | `--md-sys-color-inverse-surface` | Background for contrasting elements |
 | Inverse On Surface | `--md-sys-color-inverse-on-surface` | Text on inverse-surface |
 | Inverse Primary | `--md-sys-color-inverse-primary` | Actionable text on inverse-surface |
 
 ### Outline Colors
 
-| Role | CSS Token | Purpose |
-|------|-----------|---------|
+| Role | Token | Purpose |
+|------|-------|---------|
 | Outline | `--md-sys-color-outline` | Important boundaries (text field borders, 3:1 contrast) |
 | Outline Variant | `--md-sys-color-outline-variant` | Decorative elements (dividers, card borders) |
 
@@ -83,8 +83,8 @@ For elements that contrast against the surrounding UI (e.g., snackbars):
 
 These maintain the same color in both light and dark themes (unlike regular container colors which change tone):
 
-| Role | CSS Token |
-|------|-----------|
+| Role | Token |
+|------|-------|
 | Primary Fixed | `--md-sys-color-primary-fixed` |
 | Primary Fixed Dim | `--md-sys-color-primary-fixed-dim` |
 | On Primary Fixed | `--md-sys-color-on-primary-fixed` |
@@ -167,101 +167,46 @@ Colors must only be used in their intended pairs to ensure accessible contrast:
 
 **Never pair colors outside their intended pairs** — this breaks contrast guarantees, especially under dynamic color and high contrast modes.
 
+### Compose Color Role Pairing
+
+In Compose, the pairing rules map to `MaterialTheme.colorScheme` properties:
+
+| Container | Content on it |
+|---|---|
+| `primary` | `onPrimary` |
+| `primaryContainer` | `onPrimaryContainer` |
+| `secondary` | `onSecondary` |
+| `secondaryContainer` | `onSecondaryContainer` |
+| `tertiary` | `onTertiary` |
+| `tertiaryContainer` | `onTertiaryContainer` |
+| `surface` | `onSurface` |
+| `surfaceVariant` | `onSurfaceVariant` |
+| `error` | `onError` |
+| `errorContainer` | `onErrorContainer` |
+
+### Do / Don't
+
+| Do | Don't |
+|---|---|
+| `containerColor = MaterialTheme.colorScheme.primary`, `contentColor = MaterialTheme.colorScheme.onPrimary` | `containerColor = MaterialTheme.colorScheme.primary`, `contentColor = MaterialTheme.colorScheme.tertiaryContainer` |
+| Access colors via `MaterialTheme.colorScheme.*` | Hardcode hex colors: `Color(0xFF6750A4)` |
+| Test both light and dark themes | Assume light-only usage |
+| Use M3 tonal palettes — they guarantee 3:1+ contrast when paired correctly | Mix unrelated pairs across accent families |
+| Use `contentColorFor(containerColor)` to get the correct `on*` color | Manually pick an `on*` color that doesn't match the container |
+
 ## Dynamic Color
 
 Dynamic color creates personalized color schemes from external sources:
 
 ### User-Generated (Wallpaper)
-The OS extracts a seed color from the user's wallpaper and generates a scheme. **Android:** `dynamicLightColorScheme` / `dynamicDarkColorScheme` on **Android 12+ (API 31+)**. **Web:** there is **no** browser wallpaper dynamic-color API equivalent; you can derive a seed from **content** (e.g. images) with libraries, but that is app-specific, not system wallpaper theming.
+The OS extracts a seed color from the user's wallpaper and generates a scheme. **Android:** `dynamicLightColorScheme` / `dynamicDarkColorScheme` on **Android 12+ (API 31+)**.
 
 ### Content-Based
 A seed color is extracted from in-app content (album art, book cover, etc.) to create a contextual scheme.
 
-### Generating a Scheme with JavaScript
-
-```javascript
-import {
-  argbFromHex,
-  themeFromSourceColor,
-  applyTheme,
-} from '@material/material-color-utilities';
-
-// Generate a theme from a seed color
-const theme = themeFromSourceColor(argbFromHex('#6750A4'));
-
-// Apply to the document
-applyTheme(theme, { target: document.body, dark: false });
-```
-
-### Manual CSS Generation from Seed
-
-```javascript
-import {
-  argbFromHex,
-  hexFromArgb,
-  SchemeContent,
-  Hct,
-} from '@material/material-color-utilities';
-
-function generateScheme(seedHex, isDark = false) {
-  const hct = Hct.fromInt(argbFromHex(seedHex));
-  const scheme = new SchemeContent(hct, isDark, 0.0); // 0.0 = standard contrast
-
-  return {
-    '--md-sys-color-primary': hexFromArgb(scheme.primary),
-    '--md-sys-color-on-primary': hexFromArgb(scheme.onPrimary),
-    '--md-sys-color-primary-container': hexFromArgb(scheme.primaryContainer),
-    '--md-sys-color-on-primary-container': hexFromArgb(scheme.onPrimaryContainer),
-    '--md-sys-color-secondary': hexFromArgb(scheme.secondary),
-    '--md-sys-color-on-secondary': hexFromArgb(scheme.onSecondary),
-    '--md-sys-color-secondary-container': hexFromArgb(scheme.secondaryContainer),
-    '--md-sys-color-on-secondary-container': hexFromArgb(scheme.onSecondaryContainer),
-    '--md-sys-color-tertiary': hexFromArgb(scheme.tertiary),
-    '--md-sys-color-on-tertiary': hexFromArgb(scheme.onTertiary),
-    '--md-sys-color-tertiary-container': hexFromArgb(scheme.tertiaryContainer),
-    '--md-sys-color-on-tertiary-container': hexFromArgb(scheme.onTertiaryContainer),
-    '--md-sys-color-error': hexFromArgb(scheme.error),
-    '--md-sys-color-on-error': hexFromArgb(scheme.onError),
-    '--md-sys-color-error-container': hexFromArgb(scheme.errorContainer),
-    '--md-sys-color-on-error-container': hexFromArgb(scheme.onErrorContainer),
-    '--md-sys-color-surface': hexFromArgb(scheme.surface),
-    '--md-sys-color-on-surface': hexFromArgb(scheme.onSurface),
-    '--md-sys-color-on-surface-variant': hexFromArgb(scheme.onSurfaceVariant),
-    '--md-sys-color-surface-container': hexFromArgb(scheme.surfaceContainer),
-    '--md-sys-color-surface-container-low': hexFromArgb(scheme.surfaceContainerLow),
-    '--md-sys-color-surface-container-lowest': hexFromArgb(scheme.surfaceContainerLowest),
-    '--md-sys-color-surface-container-high': hexFromArgb(scheme.surfaceContainerHigh),
-    '--md-sys-color-surface-container-highest': hexFromArgb(scheme.surfaceContainerHighest),
-    '--md-sys-color-outline': hexFromArgb(scheme.outline),
-    '--md-sys-color-outline-variant': hexFromArgb(scheme.outlineVariant),
-    '--md-sys-color-inverse-surface': hexFromArgb(scheme.inverseSurface),
-    '--md-sys-color-inverse-on-surface': hexFromArgb(scheme.inverseOnSurface),
-    '--md-sys-color-inverse-primary': hexFromArgb(scheme.inversePrimary),
-  };
-}
-
-// Apply to document
-function applyScheme(seedHex, isDark = false) {
-  const tokens = generateScheme(seedHex, isDark);
-  const root = document.documentElement;
-  for (const [property, value] of Object.entries(tokens)) {
-    root.style.setProperty(property, value);
-  }
-}
-```
-
 ## Color Harmonization
 
-When integrating custom brand colors that don't come from the seed, use harmonization to blend them into the tonal system:
-
-```javascript
-import { Blend } from '@material/material-color-utilities';
-
-// Harmonize a custom color with the primary color
-const harmonized = Blend.harmonize(customColorArgb, primaryColorArgb);
-```
-
-This shifts the custom color's hue slightly toward the scheme's primary, making it feel cohesive without losing its identity.
+When integrating custom brand colors that don't come from the seed, use harmonization to blend them into the tonal system. This shifts the custom color's hue slightly toward the scheme's primary, making it feel cohesive without losing its identity.
 
 ## User-Controlled Contrast (May 2025)
 
@@ -270,11 +215,6 @@ MD3 now supports 3 contrast levels:
 - **Medium** (0.5): Increased tonal distance between roles
 - **High** (1.0): Maximum tonal distance for vision accessibility
 
-```javascript
-// Generate high contrast scheme
-const scheme = new SchemeContent(hct, isDark, 1.0); // 1.0 = high contrast
-```
-
 The contrast parameter adjusts the tonal distance between paired roles, increasing legibility without changing the overall color feel.
 
 ## Baseline Color Scheme (Default Values)
@@ -282,77 +222,73 @@ The contrast parameter adjusts the tonal distance between paired roles, increasi
 The static baseline scheme for products not using dynamic color:
 
 ### Light Theme
-```css
-:root {
-  --md-sys-color-primary: #6750A4;
-  --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-container: #EADDFF;
-  --md-sys-color-on-primary-container: #21005D;
-  --md-sys-color-secondary: #625B71;
-  --md-sys-color-on-secondary: #FFFFFF;
-  --md-sys-color-secondary-container: #E8DEF8;
-  --md-sys-color-on-secondary-container: #1D192B;
-  --md-sys-color-tertiary: #7D5260;
-  --md-sys-color-on-tertiary: #FFFFFF;
-  --md-sys-color-tertiary-container: #FFD8E4;
-  --md-sys-color-on-tertiary-container: #31111D;
-  --md-sys-color-error: #B3261E;
-  --md-sys-color-on-error: #FFFFFF;
-  --md-sys-color-error-container: #F9DEDC;
-  --md-sys-color-on-error-container: #410E0B;
-  --md-sys-color-surface: #FEF7FF;
-  --md-sys-color-on-surface: #1D1B20;
-  --md-sys-color-on-surface-variant: #49454F;
-  --md-sys-color-surface-container-lowest: #FFFFFF;
-  --md-sys-color-surface-container-low: #F7F2FA;
-  --md-sys-color-surface-container: #F3EDF7;
-  --md-sys-color-surface-container-high: #ECE6F0;
-  --md-sys-color-surface-container-highest: #E6E0E9;
-  --md-sys-color-surface-dim: #DED8E1;
-  --md-sys-color-surface-bright: #FEF7FF;
-  --md-sys-color-outline: #79747E;
-  --md-sys-color-outline-variant: #CAC4D0;
-  --md-sys-color-inverse-surface: #322F35;
-  --md-sys-color-inverse-on-surface: #F5EFF7;
-  --md-sys-color-inverse-primary: #D0BCFF;
-}
-```
+
+| Token | Value |
+|-------|-------|
+| primary | #6750A4 |
+| on-primary | #FFFFFF |
+| primary-container | #EADDFF |
+| on-primary-container | #21005D |
+| secondary | #625B71 |
+| on-secondary | #FFFFFF |
+| secondary-container | #E8DEF8 |
+| on-secondary-container | #1D192B |
+| tertiary | #7D5260 |
+| on-tertiary | #FFFFFF |
+| tertiary-container | #FFD8E4 |
+| on-tertiary-container | #31111D |
+| error | #B3261E |
+| on-error | #FFFFFF |
+| error-container | #F9DEDC |
+| on-error-container | #410E0B |
+| surface | #FEF7FF |
+| on-surface | #1D1B20 |
+| on-surface-variant | #49454F |
+| surface-container-lowest | #FFFFFF |
+| surface-container-low | #F7F2FA |
+| surface-container | #F3EDF7 |
+| surface-container-high | #ECE6F0 |
+| surface-container-highest | #E6E0E9 |
+| surface-dim | #DED8E1 |
+| surface-bright | #FEF7FF |
+| outline | #79747E |
+| outline-variant | #CAC4D0 |
+| inverse-surface | #322F35 |
+| inverse-on-surface | #F5EFF7 |
+| inverse-primary | #D0BCFF |
 
 ### Dark Theme
-```css
-@media (prefers-color-scheme: dark) {
-  :root {
-    --md-sys-color-primary: #D0BCFF;
-    --md-sys-color-on-primary: #381E72;
-    --md-sys-color-primary-container: #4F378B;
-    --md-sys-color-on-primary-container: #EADDFF;
-    --md-sys-color-secondary: #CCC2DC;
-    --md-sys-color-on-secondary: #332D41;
-    --md-sys-color-secondary-container: #4A4458;
-    --md-sys-color-on-secondary-container: #E8DEF8;
-    --md-sys-color-tertiary: #EFB8C8;
-    --md-sys-color-on-tertiary: #492532;
-    --md-sys-color-tertiary-container: #633B48;
-    --md-sys-color-on-tertiary-container: #FFD8E4;
-    --md-sys-color-error: #F2B8B5;
-    --md-sys-color-on-error: #601410;
-    --md-sys-color-error-container: #8C1D18;
-    --md-sys-color-on-error-container: #F9DEDC;
-    --md-sys-color-surface: #141218;
-    --md-sys-color-on-surface: #E6E0E9;
-    --md-sys-color-on-surface-variant: #CAC4D0;
-    --md-sys-color-surface-container-lowest: #0F0D13;
-    --md-sys-color-surface-container-low: #1D1B20;
-    --md-sys-color-surface-container: #211F26;
-    --md-sys-color-surface-container-high: #2B2930;
-    --md-sys-color-surface-container-highest: #36343B;
-    --md-sys-color-surface-dim: #141218;
-    --md-sys-color-surface-bright: #3B383E;
-    --md-sys-color-outline: #938F99;
-    --md-sys-color-outline-variant: #49454F;
-    --md-sys-color-inverse-surface: #E6E0E9;
-    --md-sys-color-inverse-on-surface: #322F35;
-    --md-sys-color-inverse-primary: #6750A4;
-  }
-}
-```
+
+| Token | Value |
+|-------|-------|
+| primary | #D0BCFF |
+| on-primary | #381E72 |
+| primary-container | #4F378B |
+| on-primary-container | #EADDFF |
+| secondary | #CCC2DC |
+| on-secondary | #332D41 |
+| secondary-container | #4A4458 |
+| on-secondary-container | #E8DEF8 |
+| tertiary | #EFB8C8 |
+| on-tertiary | #492532 |
+| tertiary-container | #633B48 |
+| on-tertiary-container | #FFD8E4 |
+| error | #F2B8B5 |
+| on-error | #601410 |
+| error-container | #8C1D18 |
+| on-error-container | #F9DEDC |
+| surface | #141218 |
+| on-surface | #E6E0E9 |
+| on-surface-variant | #CAC4D0 |
+| surface-container-lowest | #0F0D13 |
+| surface-container-low | #1D1B20 |
+| surface-container | #211F26 |
+| surface-container-high | #2B2930 |
+| surface-container-highest | #36343B |
+| surface-dim | #141218 |
+| surface-bright | #3B383E |
+| outline | #938F99 |
+| outline-variant | #49454F |
+| inverse-surface | #E6E0E9 |
+| inverse-on-surface | #322F35 |
+| inverse-primary | #6750A4 |

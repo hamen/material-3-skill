@@ -24,30 +24,6 @@ MD3 defines 5 breakpoint classes:
 | Large | 1200–1599dp | Desktop | 12 |
 | Extra-large | 1600dp+ | Ultra-wide, large desktop | 12 |
 
-### CSS Media Queries (web)
-
-Use these for **CSS layouts**. **Compose** apps should use window size classes / adaptive APIs rather than duplicating this logic only in CSS.
-
-```css
-/* Compact (default — mobile-first) */
-/* No media query needed, this is the base */
-
-/* Medium */
-@media (min-width: 600px) { }
-
-/* Expanded */
-@media (min-width: 840px) { }
-
-/* Large */
-@media (min-width: 1200px) { }
-
-/* Extra-large */
-@media (min-width: 1600px) { }
-```
-
-### dp to px Conversion
-On the web, 1dp ≈ 1px at standard density. The breakpoint values translate directly to CSS pixels.
-
 ## Layout Anatomy
 
 ### Key Terms
@@ -84,48 +60,6 @@ Expanded:   3-column grid
 Large:      4-column grid + optional side panel
 ```
 
-```html
-<div class="md3-feed">
-  <div class="md3-feed__item">
-    <!-- Card content -->
-  </div>
-  <div class="md3-feed__item">
-    <!-- Card content -->
-  </div>
-  <!-- More items -->
-</div>
-```
-
-```css
-.md3-feed {
-  display: grid;
-  gap: 8px;
-  padding: 16px;
-  grid-template-columns: 1fr; /* Compact: 1 column */
-}
-
-@media (min-width: 600px) {
-  .md3-feed {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    padding: 24px;
-  }
-}
-
-@media (min-width: 840px) {
-  .md3-feed {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .md3-feed {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-  }
-}
-```
-
 ### List-Detail Layout
 
 **Use when**: Browsing a list of items where each has detailed content (email, file browser, contacts).
@@ -136,104 +70,9 @@ Medium:     Side-by-side list (1/3) + detail (2/3)
 Expanded:   Side-by-side with wider detail pane
 ```
 
-```html
-<div class="md3-list-detail">
-  <aside class="md3-list-detail__list">
-    <md-list>
-      <md-list-item type="button" class="active">
-        <div slot="headline">Item 1</div>
-        <div slot="supporting-text">Description</div>
-      </md-list-item>
-      <md-list-item type="button">
-        <div slot="headline">Item 2</div>
-        <div slot="supporting-text">Description</div>
-      </md-list-item>
-    </md-list>
-  </aside>
-  <main class="md3-list-detail__detail">
-    <h2>Item 1 Detail</h2>
-    <p>Full content here...</p>
-  </main>
-</div>
-```
-
-```css
-.md3-list-detail {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-}
-
-.md3-list-detail__list {
-  background: var(--md-sys-color-surface-container);
-  border-radius: var(--md-sys-shape-corner-large);
-  overflow: auto;
-}
-
-.md3-list-detail__detail {
-  flex: 1;
-  padding: 24px;
-}
-
-/* Compact: show one at a time */
-@media (max-width: 599px) {
-  .md3-list-detail__detail { display: none; }
-  .md3-list-detail--detail-active .md3-list-detail__list { display: none; }
-  .md3-list-detail--detail-active .md3-list-detail__detail { display: block; }
-}
-
-/* Medium+: side by side */
-@media (min-width: 600px) {
-  .md3-list-detail {
-    flex-direction: row;
-    gap: 24px;
-    padding: 24px;
-  }
-  .md3-list-detail__list {
-    width: 360px;
-    flex-shrink: 0;
-  }
-}
-
-/* Expanded: wider detail */
-@media (min-width: 840px) {
-  .md3-list-detail__list {
-    width: 400px;
-  }
-}
-```
-
 ### Drag Handle for Resizable Panes
 
-In list-detail and supporting pane layouts, users can resize panes with a drag handle:
-
-```html
-<div class="md3-list-detail">
-  <aside class="md3-list-detail__list">...</aside>
-  <div class="md3-drag-handle" role="separator" aria-orientation="vertical" tabindex="0"></div>
-  <main class="md3-list-detail__detail">...</main>
-</div>
-```
-
-```css
-.md3-drag-handle {
-  width: 4px;
-  cursor: col-resize;
-  background: transparent;
-  position: relative;
-}
-.md3-drag-handle::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 4px;
-  height: 24px;
-  background: var(--md-sys-color-outline);
-  border-radius: 2px;
-}
-```
+In list-detail and supporting pane layouts, users can resize panes with a drag handle.
 
 ### Supporting Pane Layout
 
@@ -243,62 +82,6 @@ In list-detail and supporting pane layouts, users can resize panes with a drag h
 Compact:    Stacked — primary on top, supporting below (or bottom sheet)
 Medium:     Side-by-side (2/3 primary + 1/3 supporting)
 Expanded:   Same but with more space
-```
-
-```html
-<div class="md3-supporting-pane">
-  <main class="md3-supporting-pane__primary">
-    <!-- Primary content (2/3) -->
-  </main>
-  <aside class="md3-supporting-pane__secondary">
-    <!-- Supporting content (1/3) -->
-  </aside>
-</div>
-```
-
-```css
-.md3-supporting-pane {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 16px;
-}
-
-/* Medium+: side by side */
-@media (min-width: 600px) {
-  .md3-supporting-pane {
-    flex-direction: row;
-    gap: 24px;
-    padding: 24px;
-  }
-  .md3-supporting-pane__primary { flex: 2; }
-  .md3-supporting-pane__secondary { flex: 1; }
-}
-```
-
-## CSS Container Queries
-
-For component-level responsive behavior (independent of viewport), use container queries:
-
-```css
-/* Define a container */
-.md3-card-container {
-  container-type: inline-size;
-  container-name: card;
-}
-
-/* Respond to container width */
-@container card (min-width: 400px) {
-  .md3-card {
-    flex-direction: row; /* Horizontal layout when container is wide */
-  }
-}
-
-@container card (max-width: 399px) {
-  .md3-card {
-    flex-direction: column; /* Vertical layout when narrow */
-  }
-}
 ```
 
 ## Adaptive Component Behavior
@@ -315,76 +98,6 @@ Components transform across breakpoints:
 | Cards | Full-width single column | Multi-column grid | Multi-column grid (max 4 cols) |
 | Content panes | Single pane | Optional second pane | Two or three panes |
 | Input method | Touch only | Touch + stylus | Touch + mouse/trackpad + keyboard |
-
-## Complete App Layout Example
-
-```html
-<div class="md3-app-layout">
-  <!-- Navigation (responsive — see navigation-patterns.md) -->
-  <nav class="md3-nav" aria-label="Main navigation">
-    <!-- Nav content varies by breakpoint -->
-  </nav>
-
-  <!-- Main area -->
-  <div class="md3-main-area">
-    <!-- Top app bar -->
-    <header class="md3-top-app-bar">
-      <h1 class="md3-top-app-bar__title">Dashboard</h1>
-    </header>
-
-    <!-- Content area with canonical layout -->
-    <main class="md3-content-area">
-      <!-- Use feed, list-detail, or supporting pane here -->
-    </main>
-  </div>
-</div>
-```
-
-```css
-.md3-app-layout {
-  display: flex;
-  min-height: 100vh;
-  background: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
-}
-
-.md3-main-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0; /* Prevent flex overflow */
-}
-
-.md3-content-area {
-  flex: 1;
-  overflow-y: auto;
-}
-
-/* Compact: stack vertically */
-@media (max-width: 599px) {
-  .md3-app-layout { flex-direction: column; }
-  .md3-content-area { padding: 16px; }
-}
-
-/* Medium */
-@media (min-width: 600px) and (max-width: 839px) {
-  .md3-content-area { padding: 24px; }
-}
-
-/* Expanded+ */
-@media (min-width: 840px) {
-  .md3-content-area { padding: 24px; }
-}
-
-/* Large+: constrain max content width */
-@media (min-width: 1200px) {
-  .md3-content-area {
-    max-width: 1040px;
-    margin: 0 auto;
-    padding: 24px;
-  }
-}
-```
 
 ## Foldables and Large Screens
 
@@ -404,66 +117,6 @@ Foldable devices introduce postures that don't exist on traditional phones:
 ### Hinge-Aware Layouts
 
 The fold/hinge is a physical divider. Never place interactive content or critical information across the hinge area.
-
-**Web — CSS Viewport Segments API:**
-
-```css
-/* Detect a dual-screen / foldable device with two horizontal segments */
-@media (horizontal-viewport-segments: 2) {
-  .md3-list-detail {
-    flex-direction: row;
-  }
-  .md3-list-detail__list {
-    /* Span the left segment */
-    width: env(viewport-segment-width 0 0);
-    margin-right: env(viewport-segment-left 1 0, 0px) - env(viewport-segment-right 0 0, 0px);
-  }
-  .md3-list-detail__detail {
-    flex: 1;
-  }
-}
-
-/* Detect tabletop posture (two vertical segments) */
-@media (vertical-viewport-segments: 2) {
-  .md3-media-player {
-    display: flex;
-    flex-direction: column;
-  }
-  .md3-media-player__video {
-    height: env(viewport-segment-height 0 0);
-  }
-  .md3-media-player__controls {
-    flex: 1;
-  }
-}
-```
-
-**Flutter — `MediaQuery` and display features:**
-
-```dart
-Widget build(BuildContext context) {
-  final displayFeatures = MediaQuery.of(context).displayFeatures;
-  final hinge = displayFeatures.whereType<DisplayFeature>().where(
-    (f) => f.type == DisplayFeatureType.hinge || f.type == DisplayFeatureType.fold,
-  ).firstOrNull;
-
-  if (hinge != null) {
-    // Foldable device — split at the hinge
-    return TwoPane(
-      startPane: ListPane(),
-      endPane: DetailPane(),
-      paneProportion: 0.5,
-      panePriority: isPortrait ? TwoPanePriority.start : TwoPanePriority.both,
-    );
-  }
-
-  // Single screen — use window size class
-  final width = MediaQuery.sizeOf(context).width;
-  if (width < 600) return CompactLayout();
-  if (width < 840) return MediumLayout();
-  return ExpandedLayout();
-}
-```
 
 **Jetpack Compose — `WindowInfoTracker` and `FoldingFeature`:**
 
@@ -538,16 +191,6 @@ For tablets, Chromebooks, desktop, and large foldables (Expanded, Large, Extra-l
 - Constrain body content to a max width (typically 840–1040dp) and center it
 - Use the extra space for multi-pane layouts, not wider single columns
 
-```css
-/* Constrain content on large screens */
-@media (min-width: 1200px) {
-  .md3-content-area {
-    max-width: 1040px;
-    margin-inline: auto;
-  }
-}
-```
-
 **Multi-pane strategies by window class:**
 
 | Window class | Columns | Recommended layout |
@@ -564,83 +207,6 @@ For tablets, Chromebooks, desktop, and large foldables (Expanded, Large, Extra-l
 - Keyboard shortcuts become expected on desktop-class devices
 - Drag-and-drop is more natural on large screens
 
-```css
-/* Add hover states for pointer devices */
-@media (hover: hover) {
-  .md3-card:hover {
-    background: color-mix(
-      in srgb,
-      var(--md-sys-color-on-surface) 8%,
-      var(--md-sys-color-surface)
-    );
-  }
-
-  .md3-list-item:hover {
-    background: color-mix(
-      in srgb,
-      var(--md-sys-color-on-surface) 8%,
-      transparent
-    );
-  }
-}
-
-/* Ensure pointer-specific affordances */
-@media (pointer: fine) {
-  /* Scrollbars, resize handles, tighter spacing are acceptable */
-  .md3-drag-handle { cursor: col-resize; }
-}
-```
-
-**Flutter — adaptive input:**
-
-```dart
-Widget build(BuildContext context) {
-  final width = MediaQuery.sizeOf(context).width;
-  final isLargeScreen = width >= 840;
-
-  return Scaffold(
-    body: Row(
-      children: [
-        // Navigation adapts
-        if (isLargeScreen)
-          NavigationRail(
-            destinations: destinations,
-            selectedIndex: selectedIndex,
-            onDestinationSelected: onSelected,
-            labelType: NavigationRailLabelType.all,
-            leading: FloatingActionButton(
-              onPressed: onCompose,
-              child: const Icon(Icons.edit),
-            ),
-          ),
-        // Content fills remaining space
-        Expanded(
-          child: isLargeScreen
-              ? Row(
-                  children: [
-                    SizedBox(width: 360, child: ListPane()),
-                    const VerticalDivider(width: 1),
-                    Expanded(child: DetailPane()),
-                  ],
-                )
-              : selectedItem == null
-                  ? ListPane()
-                  : DetailPane(),
-        ),
-      ],
-    ),
-    bottomNavigationBar: isLargeScreen
-        ? null
-        : NavigationBar(
-            destinations: destinations.map((d) =>
-              NavigationDestination(icon: d.icon, label: d.label)).toList(),
-            selectedIndex: selectedIndex,
-            onDestinationSelected: onSelected,
-          ),
-  );
-}
-```
-
 ### Foldable-Aware Canonical Layouts
 
 The three canonical layouts adapt naturally to foldables:
@@ -653,16 +219,6 @@ The three canonical layouts adapt naturally to foldables:
 
 ### Testing Large Screens and Foldables
 
-**Web:**
-- Use Chrome DevTools responsive mode to test at 600, 840, 1200, and 1600px breakpoints
-- Test with pointer: coarse (touch) and pointer: fine (mouse) media queries
-- Verify content doesn't stretch beyond readable line lengths at 1600px+
-
-**Flutter:**
-- Use `DevicePreview` package to simulate foldables and tablets
-- Test with `MediaQuery` overrides for `displayFeatures`
-- Run on Android emulators: Pixel Fold, 7.6" foldable, 10" tablet, Chromebook
-
 **Compose:**
 - Use Android Studio foldable emulators (Pixel Fold, 7.6" Foldable)
 - Test posture changes: flat → half-opened → folded
@@ -672,13 +228,13 @@ The three canonical layouts adapt naturally to foldables:
 
 When auditing, check these specific items:
 
-- [ ] App uses `MediaQuery.sizeOf(context).width` or equivalent to determine window size class
+- [ ] App uses `calculateWindowSizeClass` or equivalent to determine window size class
 - [ ] Layout switches from single-pane to multi-pane at 600dp
 - [ ] Navigation transforms: bottom bar → rail → drawer across breakpoints
 - [ ] Content has max-width constraint on large screens (not stretching to fill)
 - [ ] No critical content or interactive elements placed across a fold/hinge
 - [ ] Foldable postures handled (if targeting foldable devices): tabletop and book modes
-- [ ] Hover states exist for pointer devices (`@media (hover: hover)`)
+- [ ] Hover states exist for pointer devices
 - [ ] Touch targets remain 48dp minimum even on large screens
 - [ ] Dialogs are centered (not full-screen) on medium+ screens
 - [ ] Bottom sheets convert to side sheets on expanded+ screens

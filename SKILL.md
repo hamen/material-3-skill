@@ -1,11 +1,12 @@
 ---
 name: material-3
 description: >
-  Implement Google's Material Design 3 (Material You) UI system. Primary: Jetpack Compose
-  Material3 (MaterialTheme, components, adaptive layout). Also Flutter and limited web
-  (@material/web, maintenance mode). Covers tokens, 30+ components, layout, theming,
-  M3 Expressive (platform matrix), and accessibility. Use when: "material design", "MD3",
-  "material you", "Jetpack Compose", "MaterialTheme", "material component", "md3 button".
+  Implement Google's Material Design 3 (Material You) UI system. Primary: Compose Multiplatform
+  (Android + iOS + Desktop). Secondary: Jetpack Compose Android-only. Covers tokens, 30+ components,
+  adaptive layout, theming, dynamic color with cross-platform fallbacks, M3 Expressive,
+  platform adaptation patterns, and accessibility. Use when: "material design", "MD3",
+  "material you", "Compose Multiplatform", "CMP", "Jetpack Compose", "MaterialTheme",
+  "material component", "md3 button".
 user-invokable: true
 argument-hint: "[component|theme|layout|scaffold|audit] [description or URL]"
 ---
@@ -45,16 +46,14 @@ Data display             → See references/component-catalog.md § Data Display
 
 **What platform?**
 ```
-Jetpack Compose          → Primary: androidx.compose.material3, MaterialTheme, references/*
-Flutter                  → useMaterial3: true in ThemeData, ColorScheme.fromSeed()
-Web (vanilla JS)         → @material/web (limited; maintenance mode) + CSS custom properties
-Web (React/Vue/Svelte)   → CSS custom properties + wrapper components (no official React lib)
-Web (CSS-only)           → MD3 token values as CSS custom properties (no <md-*> elements)
+Compose Multiplatform    → Primary: org.jetbrains.compose.material3, MaterialTheme, references/*
+                           Android + iOS + Desktop. See references/cmp-dependencies.md for coordinates
+Jetpack Compose (Android)→ Secondary: androidx.compose.material3, same APIs, Android-specific features
 ```
 
 ## Design Token System
 
-All MD3 tokens use the `md.sys` namespace. **Jetpack Compose** maps roles to `MaterialTheme.colorScheme`, `MaterialTheme.typography`, and `MaterialTheme.shapes` (same semantic roles as the spec). **On the web**, these map to CSS custom properties (`--md-sys-*`):
+All MD3 tokens use the `md.sys` namespace. **Compose Multiplatform / Jetpack Compose** maps roles to `MaterialTheme.colorScheme`, `MaterialTheme.typography`, and `MaterialTheme.shapes` (same semantic roles as the spec):
 
 ### Color Tokens (`--md-sys-color-*`)
 | Token | Purpose |
@@ -146,61 +145,69 @@ CSS easing values:
 
 ## Component Quick Reference
 
-| Component | Web Element | Key Variants | Category |
-|-----------|------------|--------------|----------|
-| Button | `md-filled-button`, `md-outlined-button`, `md-text-button`, `md-elevated-button`, `md-filled-tonal-button` | Filled, Outlined, Text, Elevated, Tonal; 5 sizes (XS–XL); toggle | Actions |
-| Button group | `md-button-group` | Standard, connected | Actions |
-| Extended FAB | `md-extended-fab` | Surface, Primary, Secondary, Tertiary | Actions |
-| FAB | `md-fab` | Small, Medium, Large | Actions |
+| Component | Compose | Key Variants | Category |
+|-----------|---------|--------------|----------|
+| Button | `Button`, `OutlinedButton`, `TextButton`, `ElevatedButton`, `FilledTonalButton` | Filled, Outlined, Text, Elevated, Tonal; 5 sizes (XS–XL); toggle | Actions |
+| Button group | — | Standard, connected | Actions |
+| Extended FAB | `ExtendedFloatingActionButton` | Surface, Primary, Secondary, Tertiary | Actions |
+| FAB | `FloatingActionButton`, `SmallFloatingActionButton`, `LargeFloatingActionButton` | Small, Medium, Large | Actions |
 | FAB menu | — | — | Actions |
-| Icon button | `md-icon-button`, `md-filled-icon-button`, `md-filled-tonal-icon-button`, `md-outlined-icon-button` | Standard, Filled, Filled Tonal, Outlined | Actions |
-| Segmented button | — | Single-select, Multi-select | Actions |
+| Icon button | `IconButton`, `FilledIconButton`, `FilledTonalIconButton`, `OutlinedIconButton` | Standard, Filled, Filled Tonal, Outlined | Actions |
+| Segmented button | `SegmentedButton`, `SingleChoiceSegmentedButtonRow`, `MultiChoiceSegmentedButtonRow` | Single-select, Multi-select | Actions |
 | Split button | — | — | Actions |
-| Badge | — | Small (dot), Large (count) | Communication |
-| Loading indicator | — | Linear, Circular | Communication |
-| Progress indicator | `md-linear-progress`, `md-circular-progress` | Linear, Circular; determinate/indeterminate | Communication |
-| Snackbar | — | Single-line, Two-line, Action | Communication |
-| Tooltip | — | Plain, Rich | Communication |
-| Card | — | Filled, Outlined, Elevated | Containment |
+| Badge | `Badge`, `BadgedBox` | Small (dot), Large (count) | Communication |
+| Loading indicator | `LinearProgressIndicator`, `CircularProgressIndicator` | Linear, Circular | Communication |
+| Progress indicator | `LinearProgressIndicator`, `CircularProgressIndicator` | Linear, Circular; determinate/indeterminate | Communication |
+| Snackbar | `Snackbar`, `SnackbarHost` | Single-line, Two-line, Action | Communication |
+| Tooltip | `PlainTooltip`, `RichTooltip` | Plain, Rich | Communication |
+| Card | `Card`, `OutlinedCard`, `ElevatedCard` | Filled, Outlined, Elevated | Containment |
 | Carousel | — | Multi-browse, Uncontained, Hero | Containment |
-| Dialog | `md-dialog` | Basic, Full-screen | Containment |
-| Bottom sheet | — | Standard, Modal | Sheets |
+| Dialog | `AlertDialog`, `BasicAlertDialog` | Basic, Full-screen | Containment |
+| Bottom sheet | `ModalBottomSheet` | Standard, Modal | Sheets |
 | Side sheet | — | Standard, Modal | Sheets |
-| Divider | `md-divider` | Full-width, Inset | Containment |
-| Checkbox | `md-checkbox` | — | Input |
-| Chips | `md-chip-set`, `md-assist-chip`, `md-filter-chip`, `md-input-chip`, `md-suggestion-chip` | Assist, Filter, Input, Suggestion | Input |
-| Date picker | — | Docked, Modal, Range | Input |
-| Menu | `md-menu`, `md-menu-item` | — | Input |
-| Radio button | `md-radio` | — | Input |
-| Slider | `md-slider` | Continuous, Discrete, Range | Input |
-| Switch | `md-switch` | With/without icon | Input |
-| Text field | `md-filled-text-field`, `md-outlined-text-field` | Filled, Outlined | Input |
-| Time picker | — | Docked, Modal | Input |
-| App bar (top) | — | Center-aligned, Small, Medium, Large | Navigation |
-| Navigation bar | `md-navigation-bar` | — | Navigation |
-| Navigation drawer | `md-navigation-drawer` | Standard, Modal | Navigation |
-| Navigation rail | — | — | Navigation |
-| Search | — | Search bar, Search view | Navigation |
-| Tabs | `md-tabs`, `md-primary-tab`, `md-secondary-tab` | Primary, Secondary | Navigation |
+| Divider | `HorizontalDivider`, `VerticalDivider` | Full-width, Inset | Containment |
+| Checkbox | `Checkbox`, `TriStateCheckbox` | — | Input |
+| Chips | `AssistChip`, `FilterChip`, `InputChip`, `SuggestionChip` | Assist, Filter, Input, Suggestion | Input |
+| Date picker | `DatePicker`, `DateRangePicker`, `DatePickerDialog` | Docked, Modal, Range | Input |
+| Menu | `DropdownMenu`, `DropdownMenuItem` | — | Input |
+| Radio button | `RadioButton` | — | Input |
+| Slider | `Slider`, `RangeSlider` | Continuous, Discrete, Range | Input |
+| Switch | `Switch` | With/without icon | Input |
+| Text field | `TextField`, `OutlinedTextField` | Filled, Outlined | Input |
+| Time picker | `TimePicker`, `TimeInput` | Docked, Modal | Input |
+| App bar (top) | `TopAppBar`, `CenterAlignedTopAppBar`, `MediumTopAppBar`, `LargeTopAppBar` | Center-aligned, Small, Medium, Large | Navigation |
+| Navigation bar | `NavigationBar`, `NavigationBarItem` | — | Navigation |
+| Navigation drawer | `ModalNavigationDrawer`, `DismissibleNavigationDrawer`, `PermanentNavigationDrawer` | Standard, Modal | Navigation |
+| Navigation rail | `NavigationRail`, `NavigationRailItem` | — | Navigation |
+| Search | `SearchBar`, `DockedSearchBar` | Search bar, Search view | Navigation |
+| Tabs | `TabRow`, `Tab`, `SecondaryTabRow` | Primary, Secondary | Navigation |
 | Toolbar | — | — | Navigation |
-| List | `md-list`, `md-list-item` | One-line, Two-line, Three-line | Data Display |
+| List | `ListItem` | One-line, Two-line, Three-line | Data Display |
 
-**Note:** Components marked with `—` for web element don't have @material/web implementations yet. Use CSS custom properties with standard HTML for these. **Compose** mappings and examples live in `references/component-catalog.md`.
+**Note:** Components marked with `—` for Compose may require custom implementation or check your CMP/BOM version for availability. Full component details: `references/component-catalog.md`.
 
 Full component details with code examples: `references/component-catalog.md`
 
-## Jetpack Compose (primary)
+## Compose Multiplatform (primary)
 
-Use **`androidx.compose.material3`** with `MaterialTheme` and Material 3 composables (`Scaffold`, `Button`, `NavigationBar`, top app bars, etc.).
+Use Material 3 composables (`Scaffold`, `Button`, `NavigationBar`, top app bars, etc.) with `MaterialTheme`. In CMP projects, use `org.jetbrains.compose.material3` coordinates; for Android-only Jetpack Compose, use `androidx.compose.material3`.
 
-- **Theming**: `MaterialTheme(colorScheme = …, typography = …, shapes = …)`. Prefer `dynamicLightColorScheme` / `dynamicDarkColorScheme` on **Android 12+ (API 31+)** when dynamic color is desired; otherwise `lightColorScheme` / `darkColorScheme` or generated theme code from Material Theme Builder.
+- **Theming**: `MaterialTheme(colorScheme = …, typography = …, shapes = …)`. Use `expect/actual` to provide platform-specific color schemes — dynamic color on Android 12+, fallback seed color on iOS/Desktop.
 - **Adaptive UI**: Window size classes, list-detail and supporting-pane layouts, foldables — see `references/layout-and-responsive.md` and `references/navigation-patterns.md`.
 - **Edge-to-edge & insets**: Lay out content with `WindowInsets` / scaffold padding so bars and IME behave correctly — see `references/layout-and-responsive.md`.
 - **Experimental APIs**: Some Material 3 APIs require `@OptIn(ExperimentalMaterial3Api::class)` or expressive opt-ins; match your BOM and compiler.
 
+> **CMP note:** Dynamic color is Android-only. See [cmp-dynamic-color.md](references/cmp-dynamic-color.md) for multiplatform fallback patterns.
+
+> **CMP note:** Use CMP Maven coordinates, not Jetpack-only. See [cmp-dependencies.md](references/cmp-dependencies.md) for correct setup.
+
+> **CMP note:** Insets and system UI differ by platform. See [cmp-system-integration.md](references/cmp-system-integration.md).
+
+> **CMP note:** For Snackbar/BottomSheet/Dialog wiring with ViewModel and NavigationSuiteScaffold, see [cmp-component-architecture.md](references/cmp-component-architecture.md).
+
 ```kotlin
 MaterialTheme(
-    colorScheme = colorScheme, // from dynamicLightColorScheme / lightColorScheme / etc.
+    colorScheme = colorScheme, // from expect/actual platformColorScheme() or lightColorScheme()
     typography = Typography(),
     shapes = Shapes(),
 ) {
@@ -208,283 +215,33 @@ MaterialTheme(
 }
 ```
 
-## Web (limited): @material/web
-
-**Important:** Per [Material Design 3 for Web](https://m3.material.io/develop/web), **Material Web Components are in maintenance mode** and **M3 Expressive is not implemented on Web**. Use `@material/web` for token-backed web UIs when appropriate, but do not treat it as equivalent to Compose for current Expressive features.
-
-### Setup
-
-```bash
-npm install @material/web
-```
-
-### Import Components Individually
-
-Always import only the components you use — importing the entire package bloats the bundle:
-
-```javascript
-// Good — individual imports
-import '@material/web/button/filled-button.js';
-import '@material/web/button/outlined-button.js';
-import '@material/web/textfield/outlined-text-field.js';
-import '@material/web/icon/icon.js';
-
-// Bad — never do this
-import '@material/web'; // imports everything
-```
-
-### Basic Usage
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
-</head>
-<body>
-  <md-filled-button>Get started</md-filled-button>
-  <md-outlined-text-field label="Email" type="email"></md-outlined-text-field>
-
-  <script type="module">
-    import '@material/web/button/filled-button.js';
-    import '@material/web/textfield/outlined-text-field.js';
-  </script>
-</body>
-</html>
-```
-
-### Theming with CSS Custom Properties
-
-Apply a custom theme by setting CSS custom properties on `:root` or any ancestor:
-
-```css
-:root {
-  /* Color scheme (generate with @material/material-color-utilities) */
-  --md-sys-color-primary: #6750A4;
-  --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-container: #EADDFF;
-  --md-sys-color-on-primary-container: #21005D;
-  --md-sys-color-secondary: #625B71;
-  --md-sys-color-on-secondary: #FFFFFF;
-  --md-sys-color-secondary-container: #E8DEF8;
-  --md-sys-color-on-secondary-container: #1D192B;
-  --md-sys-color-surface: #FEF7FF;
-  --md-sys-color-on-surface: #1D1B20;
-  --md-sys-color-surface-container: #F3EDF7;
-  --md-sys-color-outline: #79747E;
-  --md-sys-color-outline-variant: #CAC4D0;
-
-  /* Typography */
-  --md-sys-typescale-body-large-font: 'Roboto Flex', sans-serif;
-  --md-sys-typescale-body-large-size: 1rem;
-  --md-sys-typescale-body-large-weight: 400;
-  --md-sys-typescale-body-large-line-height: 1.5rem;
-
-  /* Shape */
-  --md-sys-shape-corner-full: 9999px;
-  --md-sys-shape-corner-medium: 12px;
-}
-```
-
-### Component-Level Overrides
-
-Override individual component tokens for specific customization:
-
-```css
-md-filled-button {
-  --md-filled-button-container-color: var(--md-sys-color-primary);
-  --md-filled-button-label-text-color: var(--md-sys-color-on-primary);
-  --md-filled-button-container-shape: var(--md-sys-shape-corner-full);
-  --md-filled-button-container-height: 40px;
-}
-
-md-outlined-text-field {
-  --md-outlined-text-field-container-shape: var(--md-sys-shape-corner-small);
-  --md-outlined-text-field-focus-outline-color: var(--md-sys-color-primary);
-}
-```
-
-### Dark Theme
-
-Apply dark theme by overriding color tokens on a class or media query:
-
-```css
-@media (prefers-color-scheme: dark) {
-  :root {
-    --md-sys-color-primary: #D0BCFF;
-    --md-sys-color-on-primary: #381E72;
-    --md-sys-color-primary-container: #4F378B;
-    --md-sys-color-on-primary-container: #EADDFF;
-    --md-sys-color-surface: #141218;
-    --md-sys-color-on-surface: #E6E0E9;
-    --md-sys-color-surface-container: #211F26;
-    --md-sys-color-outline: #938F99;
-    --md-sys-color-outline-variant: #49454F;
-  }
-}
-```
-
-Full theming guide: `references/theming-and-dynamic-color.md`
-
 ## Common Patterns
 
 ### App Shell
 
-Standard MD3 app with responsive navigation + top app bar + content area:
+Standard MD3 app with responsive navigation + top app bar + content area. See `references/navigation-patterns.md` for the full responsive navigation pattern (bar → rail → drawer across breakpoints) and `references/layout-and-responsive.md` for canonical layouts.
 
-```html
-<div class="md3-app">
-  <nav class="md3-nav-rail" aria-label="Main navigation">
-    <!-- Navigation rail for medium+ screens -->
-    <md-fab size="small" aria-label="Compose">
-      <md-icon slot="icon">edit</md-icon>
-    </md-fab>
-    <md-navigation-bar>
-      <md-navigation-tab label="Home">
-        <md-icon slot="active-icon">home</md-icon>
-        <md-icon slot="inactive-icon">home</md-icon>
-      </md-navigation-tab>
-      <md-navigation-tab label="Search">
-        <md-icon slot="active-icon">search</md-icon>
-        <md-icon slot="inactive-icon">search</md-icon>
-      </md-navigation-tab>
-    </md-navigation-bar>
-  </nav>
-  <main class="md3-content">
-    <header class="md3-top-app-bar">
-      <h1 class="md3-top-app-bar__title" style="font: var(--md-sys-typescale-title-large)">
-        Page Title
-      </h1>
-    </header>
-    <div class="md3-body">
-      <!-- Content here -->
-    </div>
-  </main>
-</div>
-```
+```kotlin
+// Conceptual — responsive app shell
+val windowSizeClass = calculateWindowSizeClass(activity)
 
-```css
-.md3-app {
-  display: flex;
-  min-height: 100vh;
-  background: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
-}
-
-.md3-nav-rail {
-  width: 80px;
-  background: var(--md-sys-color-surface);
-  border-right: 1px solid var(--md-sys-color-outline-variant);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 12px;
-  gap: 12px;
-}
-
-.md3-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.md3-top-app-bar {
-  height: 64px;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  background: var(--md-sys-color-surface);
-}
-
-.md3-body {
-  padding: 24px;
-  flex: 1;
-}
-
-/* Responsive: switch to bottom nav on compact */
-@media (max-width: 599px) {
-  .md3-app { flex-direction: column; }
-  .md3-nav-rail {
-    order: 1;
-    width: 100%;
-    flex-direction: row;
-    justify-content: center;
-    border-right: none;
-    border-top: 1px solid var(--md-sys-color-outline-variant);
-    padding: 0;
-  }
-}
-```
-
-### Card Grid
-
-```html
-<div class="md3-card-grid">
-  <div class="md3-card md3-card--outlined">
-    <img src="image.jpg" alt="Description" class="md3-card__media">
-    <div class="md3-card__content">
-      <h3 style="font: var(--md-sys-typescale-title-medium)">Card Title</h3>
-      <p style="font: var(--md-sys-typescale-body-medium); color: var(--md-sys-color-on-surface-variant)">
-        Supporting text for this card.
-      </p>
-    </div>
-    <div class="md3-card__actions">
-      <md-text-button>Learn more</md-text-button>
-      <md-filled-tonal-button>Action</md-filled-tonal-button>
-    </div>
-  </div>
-</div>
-```
-
-```css
-.md3-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-}
-
-.md3-card--outlined {
-  border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: var(--md-sys-shape-corner-medium, 12px);
-  background: var(--md-sys-color-surface);
-  overflow: hidden;
-}
-
-.md3-card__content { padding: 16px; }
-.md3-card__actions { padding: 8px 16px 16px; display: flex; gap: 8px; justify-content: flex-end; }
-.md3-card__media { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
-```
-
-### Form Layout
-
-```html
-<form class="md3-form">
-  <md-outlined-text-field label="Full name" required></md-outlined-text-field>
-  <md-outlined-text-field label="Email" type="email" required></md-outlined-text-field>
-  <md-outlined-text-field label="Message" type="textarea" rows="4"></md-outlined-text-field>
-  <div class="md3-form__actions">
-    <md-text-button type="reset">Cancel</md-text-button>
-    <md-filled-button type="submit">Submit</md-filled-button>
-  </div>
-</form>
-```
-
-```css
-.md3-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 560px;
-}
-
-.md3-form__actions {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  margin-top: 8px;
+Scaffold(
+    bottomBar = {
+        if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+            NavigationBar { /* 3-5 destinations */ }
+        }
+    }
+) { innerPadding ->
+    Row(Modifier.padding(innerPadding)) {
+        if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Medium) {
+            NavigationRail { /* same destinations */ }
+        }
+        if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
+            PermanentNavigationDrawer(drawerContent = { /* destinations */ }) {}
+        }
+        // Content area
+        NavHost(navController, startDestination = "home") { /* routes */ }
+    }
 }
 ```
 
@@ -494,58 +251,40 @@ More patterns: `references/navigation-patterns.md`, `references/layout-and-respo
 
 **Never do these when implementing MD3:**
 
-- **Mix MD2 and MD3 libraries**: Don't use `@material/mdc-*` (MD2) alongside `@material/web` (MD3). They have incompatible APIs and styling.
-- **Hardcode colors**: Always use `var(--md-sys-color-*)` tokens, never raw hex/rgb values. Hardcoded colors break dynamic theming, dark mode, and contrast adjustment.
-- **Ignore tonal pairing**: Only combine colors in their intended pairs (e.g., `primary` + `on-primary`, `surface-container` + `on-surface`). Arbitrary pairings break contrast in dynamic color and high contrast modes.
-- **Use `outline` for dividers**: Use `outline-variant` for dividers. `outline` is for important boundaries like text field borders.
-- **Import all of @material/web**: Always import individual component modules. Barrel imports include every component and destroy bundle size.
-- **Use `border-radius` directly**: Use shape tokens (`var(--md-sys-shape-corner-medium)`) so shapes stay consistent with theming.
+- **Mix Material2 and Material3 imports**: Don't import from both `androidx.compose.material` (M2) and `androidx.compose.material3` (M3). They have incompatible theming and component APIs.
+- **Hardcode colors**: Always use `MaterialTheme.colorScheme.*` tokens, never raw `Color(0x...)` values. Hardcoded colors break dynamic theming, dark mode, and contrast adjustment.
+- **Ignore tonal pairing**: Only combine colors in their intended pairs (e.g., `primary` + `onPrimary`, `surfaceContainer` + `onSurface`). Arbitrary pairings break contrast in dynamic color and high contrast modes.
+- **Use `outline` for dividers**: Use `outlineVariant` for dividers. `outline` is for important boundaries like text field borders.
 - **Use shadows for elevation by default**: MD3 communicates elevation through tonal surface color, not shadows. Only add shadows when elements need extra separation from busy backgrounds.
-- **Apply frontend-design "avoid Roboto" rule**: On **Android**, **Roboto** is the default Material typeface; **web** often uses Roboto or Roboto Flex with MD3 tokens. Replace only when intentionally customizing the type scale.
-- **Assume SSR compatibility**: `@material/web` uses Web Components (custom elements) which require JavaScript to render. They won't produce meaningful HTML in SSR without additional hydration strategies.
+- **Apply frontend-design "avoid Roboto" rule**: On **Android**, **Roboto** is the default Material typeface. Replace only when intentionally customizing the type scale. On **iOS**, `FontFamily.Default` resolves to San Francisco.
+- **Use `android.*` imports in `commonMain`**: CMP `commonMain` code cannot reference Android-specific APIs. Use `expect/actual` patterns — see [cmp-system-integration.md](references/cmp-system-integration.md).
+- **Use `dynamicLightColorScheme` without fallback**: Dynamic color is Android 12+ only. Always provide a seed-based fallback for iOS and Desktop — see [cmp-dynamic-color.md](references/cmp-dynamic-color.md).
+- **Use Jetpack-only Maven coordinates in CMP**: Use `org.jetbrains.compose.material3:material3`, not `androidx.compose.material3:material3` in `commonMain` — see [cmp-dependencies.md](references/cmp-dependencies.md).
+- **Hardcode `Roboto` font in `commonMain`**: Use `FontFamily.Default` (resolves to system font per platform) or load a custom font via `Res.font`. Hardcoding Roboto looks wrong on iOS.
 - **Ignore foldables and large screens**: MD3 is designed for all screen sizes. Don't ship phone-only layouts — use canonical layouts, multi-pane at 600dp+, and test on foldable/tablet emulators. Place no interactive content across the fold/hinge.
 - **Stretch content to fill wide screens**: On Large (1200dp+) and Extra-large (1600dp+) windows, constrain content to a max width (840–1040dp). Endless-width text lines are unreadable.
 
 ## Platform Notes
 
-### Flutter
-```dart
-MaterialApp(
-  theme: ThemeData(
-    useMaterial3: true,
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-  ),
-);
-```
+### Compose Multiplatform
+See **[Compose Multiplatform (primary)](#compose-multiplatform-primary)** above. Use `expect/actual` to provide `ColorScheme` per platform. On Android: `dynamicLightColorScheme` / `dynamicDarkColorScheme` when `Build.VERSION.SDK_INT >= Build.VERSION_CODES.S`; on iOS/Desktop: seed-based fallback. See [cmp-dynamic-color.md](references/cmp-dynamic-color.md).
 
-### Jetpack Compose
-See **[Jetpack Compose (primary)](#jetpack-compose-primary)** above. Use `LocalContext.current` with `dynamicLightColorScheme` / `dynamicDarkColorScheme` only when `Build.VERSION.SDK_INT >= Build.VERSION_CODES.S` and dynamic color is enabled; otherwise supply static light/dark schemes.
-
-### Component Name Mapping
-| Concept | Web | Flutter | Compose |
-|---------|-----|---------|---------|
-| Filled button | `md-filled-button` | `FilledButton` | `Button` |
-| Outlined text field | `md-outlined-text-field` | `OutlinedTextField` | `OutlinedTextField` |
-| FAB | `md-fab` | `FloatingActionButton` | `FloatingActionButton` |
-| Navigation bar | `md-navigation-bar` | `NavigationBar` | `NavigationBar` |
-| Switch | `md-switch` | `Switch` | `Switch` |
+> **CMP note:** For platform-specific component behavior and iOS friction analysis, see [cmp-platform-adaptation.md](references/cmp-platform-adaptation.md).
 
 ## M3 Expressive (May 2025)
 
-The Expressive update adds visual richness while maintaining usability. **Availability differs by platform** — do not assume one stack implements everything.
+The Expressive update adds visual richness while maintaining usability. Check your Compose Multiplatform / Jetpack Compose BOM version for API availability.
 
-| Capability | Jetpack Compose | Flutter | Web (`@material/web`) |
-|------------|-----------------|---------|------------------------|
-| Spring / motion physics | Supported in Material 3 (see `MotionScheme`, expressive APIs per BOM) | Varies by Flutter Material version | **Not** in Material Web; use easing/duration or custom motion |
-| Emphasized typography | Via theme / type scale | Via theme | Token/CSS only; no full Expressive component set |
-| Shape morphing | Compose-first in Google’s expressive rollout | Check current Flutter docs | **Not** in `@material/web` |
-| New button sizes (XS–XL), toggle | Follow Compose Material3 components | Follow Flutter MD3 | Height/CSS approximations only |
-| Extra corner tokens (e.g. large-increased) | `MaterialTheme.shapes` / tokens | Theme shapes | CSS `--md-sys-shape-*` |
-| 3 contrast levels | Scheme builders / system | Plugins / manual | `SchemeContent` contrast parameter in JS utilities |
+| Capability | Compose Multiplatform / Jetpack Compose |
+|------------|----------------------------------------|
+| Spring / motion physics | Supported via `MotionScheme` and expressive APIs (check BOM version) |
+| Emphasized typography | Via theme / type scale |
+| Shape morphing | Compose-first in Google’s expressive rollout |
+| New button sizes (XS–XL), toggle | Follow Compose Material3 components |
+| Extra corner tokens (e.g. large-increased) | `MaterialTheme.shapes` / tokens |
+| 3 contrast levels | Scheme builders / system (Android); manual on other platforms |
 
-**Web:** [Material Web is maintenance-only; M3 Expressive is not on Web](https://m3.material.io/develop/web). Use CSS easing/duration tokens as fallback for motion, not spring parity.
-
-**Legacy easing/duration** remains valid for **transitions** (enter/exit/shared-axis) where the spec still references them; see the Motion table below.
+**Legacy easing/duration** remains valid for **transitions** (enter/exit/shared-axis) where the spec still references them; see the Motion table in `references/typography-and-shape.md`.
 
 ## MD3 Compliance Audit
 
@@ -556,18 +295,20 @@ When invoked with `audit` as the argument (e.g., `/material-3 audit`), or when a
 1. **Identify the target**: The user provides a URL (use browser tools to inspect), file paths (read source), or a running app.
 2. **Inspect the following categories** and score each 0–10:
 
-| Category | What to check |
-|----------|--------------|
-| **Color tokens** | **Web:** `--md-sys-color-*` / generated CSS. **Compose:** `MaterialTheme.colorScheme` roles (no arbitrary `Color(...)` for surfaces without reason). Proper tonal pairing (`onX` on `X`). Dark theme. **Flutter:** `ColorScheme` roles. |
-| **Typography** | MD3 type scale: **Compose** `MaterialTheme.typography`; **web** typescale tokens; correct roles (Display, Headline, Title, Body, Label). |
-| **Shape** | **Compose** `MaterialTheme.shapes` / component `Shape`; **web** `var(--md-sys-shape-*)`. Buttons: full; cards: medium; avoid magic numbers. |
-| **Elevation** | Tonal elevation (`Surface` tonal/shadow as appropriate). **Web:** hover/focus where relevant. |
-| **Components** | **Compose:** Material3 composables (`Button`, `Scaffold`, etc.). **Web:** `@material/web` or spec-aligned HTML/CSS. Correct variants. |
-| **Layout** | Canonical layouts; **Compose** window size class / adaptive APIs; readable max width on large widths; foldable hinge avoidance. |
-| **Navigation** | Bar / rail / drawer / drawers+**Compose** `NavHost` patterns per size class; predictive back where applicable. |
-| **Motion** | **Compose** `MotionScheme` / expressive APIs when used; transitions may still use easing/duration. **Web:** CSS motion tokens fallback. |
-| **Accessibility** | MD3 roles help, but **verify contrast**: UI components often need **3:1** for large text/borders and **4.5:1** for normal text (WCAG 2.x). TalkBack/semantics (Compose), focus order, touch targets (~48dp). **Web:** ARIA, keyboard. |
-| **Theming** | **Compose:** `MaterialTheme` + light/dark/dynamic as designed. **Web:** CSS custom properties on `:root` or subtree. **Flutter:** `ThemeData` + `ColorScheme`. |
+| # | Category | What to check |
+|---|----------|--------------|
+| 1 | **Color tokens** | `MaterialTheme.colorScheme` roles used consistently (no arbitrary `Color(0x...)` for surfaces). Proper tonal pairing (`onX` on `X`) — see color-system.md Do/Don't. Dark theme. **CMP:** Check for hardcoded `dynamicLightColorScheme` without fallback; verify `expect/actual` pattern exists. |
+| 2 | **Typography** | MD3 type scale via `MaterialTheme.typography`; correct roles (Display, Headline, Title, Body, Label). **CMP:** No hardcoded `Roboto` — use `FontFamily.Default` or custom font. Flag non-composable `Font()` usage (CMP `Font(Res.font.*)` is `@Composable`). |
+| 3 | **Shape** | `MaterialTheme.shapes` / component `Shape` params. Buttons: full; cards: medium; avoid magic numbers. |
+| 4 | **Elevation** | Tonal elevation (`Surface` tonal/shadow as appropriate). Hover/focus elevation changes where relevant. |
+| 5 | **Components** | Material3 composables (`Button`, `Scaffold`, etc.) used correctly. Correct variants. **CMP:** Flag `LocalContext.current` usage in `commonMain`. Check Snackbar uses effect channel (not consumable boolean). |
+| 6 | **Layout** | Canonical layouts; window size class / adaptive APIs; readable max width on large screens; foldable hinge avoidance. **CMP:** Check window size class uses CMP-compatible coordinates. Check for `NavigationSuiteScaffold` usage. |
+| 7 | **Navigation** | Bar / rail / drawer per size class; `NavHost` patterns; predictive back where applicable. **CMP:** Note if navigation pattern may feel non-native on iOS — see [cmp-platform-adaptation.md](references/cmp-platform-adaptation.md). |
+| 8 | **Motion** | `MotionScheme` / expressive APIs when used; transitions may still use easing/duration. |
+| 9 | **Accessibility** | **Verify contrast**: UI components need **3:1** for large text/borders and **4.5:1** for normal text (WCAG 2.x). Verify `contentDescription` on meaningful images. Check 48dp touch targets. Verify color is not sole status indicator. TalkBack/semantics, focus order. **CMP:** Note TalkBack vs VoiceOver semantic differences. |
+| 10 | **Theming** | `MaterialTheme` + light/dark/dynamic as designed. **CMP:** Verify `expect/actual` exists for platform-specific theme components. |
+| 11 | **CMP dependency hygiene** | Verify coordinates are CMP (`org.jetbrains.compose.*`), not Jetpack-only (`androidx.compose.*`) in `commonMain`. No `android.*` imports in `commonMain`. |
+| 12 | **Component architecture** | Snackbar/Sheet use Effect channel (not state booleans). Dialog uses state flag (acceptable). M2 components flagged for migration (`BottomNavigation` → `NavigationBar`, etc.). See [cmp-component-architecture.md](references/cmp-component-architecture.md). |
 
 3. **Generate the report**:
 
@@ -576,21 +317,23 @@ When invoked with `audit` as the argument (e.g., `/material-3 audit`), or when a
 
 Target: [URL or file path]
 Date: [date]
-Overall Score: [X/100]
+Overall Score: [X/120]
 
 ## Scores by Category
-| Category       | Score | Status |
-|----------------|-------|--------|
-| Color tokens   | X/10  | [pass/warn/fail] |
-| Typography     | X/10  | [pass/warn/fail] |
-| Shape          | X/10  | [pass/warn/fail] |
-| Elevation      | X/10  | [pass/warn/fail] |
-| Components     | X/10  | [pass/warn/fail] |
-| Layout         | X/10  | [pass/warn/fail] |
-| Navigation     | X/10  | [pass/warn/fail] |
-| Motion         | X/10  | [pass/warn/fail] |
-| Accessibility  | X/10  | [pass/warn/fail] |
-| Theming        | X/10  | [pass/warn/fail] |
+| Category              | Score | Status |
+|-----------------------|-------|--------|
+| Color tokens          | X/10  | [pass/warn/fail] |
+| Typography            | X/10  | [pass/warn/fail] |
+| Shape                 | X/10  | [pass/warn/fail] |
+| Elevation             | X/10  | [pass/warn/fail] |
+| Components            | X/10  | [pass/warn/fail] |
+| Layout                | X/10  | [pass/warn/fail] |
+| Navigation            | X/10  | [pass/warn/fail] |
+| Motion                | X/10  | [pass/warn/fail] |
+| Accessibility         | X/10  | [pass/warn/fail] |
+| Theming               | X/10  | [pass/warn/fail] |
+| CMP dependency hygiene| X/10  | [pass/warn/fail] |
+| Component architecture| X/10  | [pass/warn/fail] |
 
 ## Critical Issues
 [List items scoring 0-3 with specific file:line references and fixes]
@@ -608,30 +351,27 @@ Overall Score: [X/100]
 
 ### Audit Methods
 
-**For a live URL** (browser or devtools):
-- Inspect computed styles and CSS variables (`--md-sys-*`)
-- Resize viewport or use responsive mode for breakpoints
-- Capture screenshots at key widths if helpful
-
 **For source code** (file paths provided):
 - **Compose/Kotlin:** `.kt` files — `MaterialTheme`, composables, `Color(0x…)` abuse, hard-coded `Dp`, missing `Modifier.semantics` where needed
-- **Flutter:** `.dart` — `ThemeData`, `ColorScheme`
-- **Web:** HTML/JSX/Vue/Svelte; CSS/SCSS for tokens
-- Check **web** imports for `@material/web` vs `@material/mdc-*` (MD2)
+- **CMP:** Check `commonMain` for Android-only imports, Jetpack-only coordinates, missing `expect/actual`
 
-**Quick checks** (adapt paths to your stack):
+**Quick checks** (adapt paths to your codebase):
 ```
-# Web: hardcoded colors
-grep -rn '#[0-9a-fA-F]\{3,8\}' --include='*.css' --include='*.scss'
-
-# Compose: raw Color(...) audits (sample — tune for your codebase)
+# Compose: raw Color(...) usage
 grep -rn 'Color(0x' --include='*.kt'
 
-# MD2 on web
-grep -rn '@material/mdc-' --include='*.js' --include='*.ts'
-```
+# CMP: android imports in commonMain
+grep -rn 'import android\.' --include='*.kt' src/commonMain/
 
-**Browser automation** (if your environment exposes MCP browser tools): navigate, snapshot DOM/CSS variables, resize for breakpoints — optional, not required.
+# CMP: Jetpack-only coordinates in common build
+grep -rn 'androidx\.compose' build.gradle.kts
+
+# CMP: hardcoded Roboto in commonMain
+grep -rn 'Roboto' --include='*.kt' src/commonMain/
+
+# M2/M3 mixing
+grep -rn 'androidx.compose.material[^3]' --include='*.kt'
+```
 
 ### Scoring Guide
 
@@ -645,9 +385,17 @@ Status thresholds: **pass** (7+), **warn** (4-6), **fail** (0-3)
 
 ## Reference Documents
 
-- `references/color-system.md` — Color roles, tonal palettes, dynamic color, Compose + CSS mapping
+### M3 Spec References
+- `references/color-system.md` — Color roles, tonal palettes, dynamic color, scheme generation
 - `references/typography-and-shape.md` — Type scale, shape corners, elevation, motion, Expressive notes
-- `references/component-catalog.md` — Components: Compose + `@material/web` where applicable
+- `references/component-catalog.md` — 30+ components with Compose mappings
 - `references/navigation-patterns.md` — Navigation selection, Compose-first adaptive patterns
 - `references/layout-and-responsive.md` — Breakpoints, canonical layouts, insets, foldables
-- `references/theming-and-dynamic-color.md` — Theming: Compose first, then Flutter and web
+- `references/theming-and-dynamic-color.md` — Theming with MaterialTheme, dynamic color, brand integration
+
+### CMP-Specific References
+- `references/cmp-dependencies.md` — Maven coordinates CMP vs Jetpack, feature parity, version sync
+- `references/cmp-dynamic-color.md` — Dynamic color fallbacks, expect/actual color scheme, iOS/Desktop strategy
+- `references/cmp-system-integration.md` — Insets, safe area, status bar, system fonts, Context-free patterns
+- `references/cmp-platform-adaptation.md` — Platform-specific component behavior, M3-pure vs native adaptation
+- `references/cmp-component-architecture.md` — MVI/MVVM wiring for Snackbar, BottomSheet, Dialog; NavigationSuiteScaffold; M2→M3 migration

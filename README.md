@@ -1,141 +1,87 @@
-# Material Design 3 Skill for Claude Code
+# cmp-material3-skill
 
-A comprehensive [Claude Code](https://claude.ai/claude-code) skill for implementing Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
+Material Design 3 skill for [Compose Multiplatform](https://www.jetbrains.com/compose-multiplatform/) — Android, iOS, and Desktop.
 
 [![Material Design 3](assets/m3-hero.png)](https://m3.material.io/)
 
-## Table of contents
-
-- [What it does](#what-it-does)
-- [Platform support](#platform-support)
-- [How this skill was built](#how-this-skill-was-built)
-  - [Sources](#sources)
-  - [Process](#process)
-  - [What this means for accuracy](#what-this-means-for-accuracy)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Build MD3 components](#build-md3-components)
-  - [Generate a theme](#generate-a-theme)
-  - [Scaffold an app](#scaffold-an-app)
-  - [Audit MD3 compliance](#audit-md3-compliance)
-- [What's included](#whats-included)
-- [Contributing](#contributing)
-- [License](#license)
+Forked from [hamen/material-3-skill](https://github.com/hamen/material-3-skill) with added Compose Multiplatform guidance, platform adaptation patterns, and cross-platform dependency management.
 
 ## What it does
 
-- Guides Claude in generating **MD3-compliant UI** with correct design tokens, components, theming, layout, and accessibility
-- **Primary focus: Jetpack Compose** — `MaterialTheme`, Material 3 composables, adaptive layouts, edge-to-edge/insets, and current Compose Material3 patterns
-- Also covers **Flutter** (`useMaterial3`, `ColorScheme.fromSeed`, etc.) at a secondary level
-- **Web (`@material/web`)** is documented as a **limited** path: [Material Web is in maintenance mode](https://m3.material.io/develop/web) and **M3 Expressive is not implemented on Web**; use tokens and components knowing the ecosystem is not receiving active feature work
-- Covers **30+ components** with Compose-oriented mappings plus web element names where applicable, attributes, and examples in `references/component-catalog.md`
-- Includes an **MD3 compliance audit** mode that scores apps across 10 categories (works for Compose/Kotlin, Flutter/Dart, and web/CSS)
-- Covers **M3 Expressive** (May 2025) with an explicit **per-platform** matrix — see [SKILL.md](SKILL.md) and [references/typography-and-shape.md](references/typography-and-shape.md)
+- Guides AI agents in generating **MD3-compliant UI** with correct design tokens, components, theming, layout, and accessibility
+- **Primary: Compose Multiplatform** — `MaterialTheme`, Material 3 composables, `expect/actual` patterns for Android + iOS + Desktop
+- **Secondary: Jetpack Compose Android-only** — same APIs, with Android-specific features like dynamic color
+- Covers **30+ components** with Compose mappings in `references/component-catalog.md`
+- Includes CMP-specific guidance: dynamic color fallbacks, platform adaptation, system integration, dependency management
+- **11-category MD3 compliance audit** with CMP-specific checks (dependency hygiene, `commonMain` violations, platform fallbacks)
 
 ## Platform support
 
-| Platform | Role in this skill | Notes |
-|----------|---------------------|--------|
-| **Jetpack Compose** | **Primary** | Best match for current Material 3 implementation APIs, Expressive motion where available, adaptive navigation |
-| **Flutter** | Secondary | `ThemeData(useMaterial3: true)`, `ColorScheme.fromSeed`, community packages for dynamic color |
-| **Web** | Limited | `@material/web` + CSS custom properties; maintenance mode; no full Expressive parity |
+| Platform | Role | Notes |
+|----------|------|-------|
+| **Compose Multiplatform** | **Primary** | Android + iOS + Desktop. `org.jetbrains.compose.material3` |
+| **Jetpack Compose (Android-only)** | Secondary | `androidx.compose.material3`. Subset of CMP |
 
-## How this skill was built
+## What's different from the original
 
-This skill was created collaboratively between a human and [Claude Code](https://claude.ai/claude-code) (Anthropic's coding agent). The information in the skill files is **distilled from publicly available sources** — it is not original design system documentation, but a curated reference assembled from official docs, library references, and training data.
-
-### Sources
-
-Design token values, component specs, layout breakpoints, color roles, typography scales, and implementation patterns were gathered from:
-
-- **[m3.material.io](https://m3.material.io/)** — Google's official Material Design 3 documentation
-- **[Android Developers — Material Design 3 in Compose](https://developer.android.com/develop/ui/compose/designsystems/material3)** and **AndroidX Compose Material3** API references
-- **Claude's training data** — publicly available Material Design documentation, Flutter and Jetpack Compose documentation, `@material/web` references, and community guides
-- **[@material/web](https://github.com/material-components/material-web)** — used to verify web component element names, attributes, and import paths where web guidance is included
-
-### Process
-
-1. **Planning phase** — Main `SKILL.md` plus focused reference files under `references/`.
-
-2. **Live site research** — m3.material.io is often a JavaScript-rendered SPA; browser automation helps verify current token values, component lists, and Expressive updates.
-
-3. **Cross-referencing** — Official Compose and Flutter docs fill in copy-paste APIs; web sections stay secondary.
-
-4. **Distillation** — Token tables, component templates, and layout examples normalized for consistency.
-
-5. **Audit system** — 10-category MD3 compliance audit adaptable to Compose, Flutter, or web source trees.
-
-### What this means for accuracy
-
-The skill is a **best-effort distillation** and may drift as Google updates the spec.
-
-- **Compose** guidance is prioritized for currency; prefer official Android docs for exact API signatures and BOM versions.
-- **Web**: Material Web is [in maintenance mode](https://m3.material.io/develop/web); M3 Expressive is **not** on Web. Examples may lag; verify against the [material-web](https://github.com/material-components/material-web) repo.
-- **M3 Expressive** (motion, emphasized type, shape morphing, new radii) varies by platform — see the Expressive sections in [SKILL.md](SKILL.md).
-- Contributions and corrections are welcome.
+- **CMP-first**: Compose Multiplatform is the primary platform, not Android-only Jetpack Compose
+- **No Flutter/Web**: Focused entirely on the Compose ecosystem
+- **Platform adaptation guide**: Component-by-component analysis of M3 on iOS, interface vs expect/actual framework ([cmp-platform-adaptation.md](references/cmp-platform-adaptation.md))
+- **Dynamic color patterns**: expect/actual patterns with fallback strategies, bridge pattern decision guide ([cmp-dynamic-color.md](references/cmp-dynamic-color.md))
+- **System integration**: Insets, fonts (including CMP `Font()` gotcha), status bar — the cross-platform gotchas ([cmp-system-integration.md](references/cmp-system-integration.md))
+- **Component architecture**: MVI/MVVM wiring for Snackbar, BottomSheet, Dialog + NavigationSuiteScaffold ([cmp-component-architecture.md](references/cmp-component-architecture.md))
+- **CMP dependency tracking**: Correct coordinates, feature parity, version mapping ([cmp-dependencies.md](references/cmp-dependencies.md))
+- **Color pairing guide**: Do/Don't for M3 color role usage with accessibility guardrails
+- **M2→M3 migration**: Component mapping reference for projects upgrading
+- **Enhanced audit**: 12 categories with CMP-specific checks (up from original 10)
 
 ## Installation
 
-Copy the skill into your Claude Code skills directory:
+### Claude Code
 
 ```bash
-# Clone the repo
-git clone https://github.com/hamen/material-3-skill.git
-
-# Copy to Claude Code skills directory
-cp -r material-3-skill ~/.claude/skills/material-3
+# Clone and symlink
+git clone https://github.com/santyas/cmp-material3-skill.git
+ln -s /path/to/cmp-material3-skill ~/.claude/skills/cmp-material3-skill
 ```
 
-Or symlink for easy updates:
+### Cursor
 
 ```bash
-ln -s /path/to/material-3-skill ~/.claude/skills/material-3
+ln -s /path/to/cmp-material3-skill ~/.cursor/skills/cmp-material3-skill
 ```
 
 ## Usage
 
-### Build MD3 components
-
 ```
 /material-3 component Create a login form with email and password fields
-```
-
-### Generate a theme
-
-```
 /material-3 theme Generate a theme from seed color #1A73E8
-```
-
-### Scaffold an app
-
-```
 /material-3 scaffold Create a responsive app shell with navigation
+/material-3 audit [file path]
 ```
-
-### Audit MD3 compliance
-
-```
-/material-3 audit [URL or file path]
-```
-
-The audit scores your app across 10 categories (color tokens, typography, shape, elevation, components, layout, navigation, motion, accessibility, theming) and produces a detailed report with specific fixes. Targets may be **Compose/Kotlin**, **Flutter**, or **web** — see [SKILL.md](SKILL.md) for per-stack checks.
 
 ## What's included
 
 | File | Description |
 |------|-------------|
-| `SKILL.md` | Main skill: philosophy, decision trees, token overview, component table, Compose-first notes, limited web patterns, audit procedure |
-| `references/color-system.md` | Color roles, tonal palettes, dynamic color, baseline schemes (Compose + CSS) |
-| `references/component-catalog.md` | Components with Compose mappings and `@material/web` where applicable |
-| `references/theming-and-dynamic-color.md` | Theme generation, brand colors, dark mode — Compose first, then Flutter and web |
-| `references/typography-and-shape.md` | Type scale, shape, elevation, motion — including Expressive platform notes |
-| `references/navigation-patterns.md` | Nav selection, Compose-first patterns, responsive shell |
-| `references/layout-and-responsive.md` | Breakpoints, canonical layouts, edge-to-edge/insets, foldables |
-| `CONTRIBUTING.md` | How to contribute without drifting the Compose-first story |
+| `SKILL.md` | Main skill: decision trees, token overview, component table, Compose patterns, audit procedure |
+| **M3 Spec References** | |
+| `references/color-system.md` | Color roles, tonal palettes, dynamic color, baseline schemes |
+| `references/component-catalog.md` | 30+ components with Compose mappings |
+| `references/theming-and-dynamic-color.md` | Theme generation, brand colors, dark mode |
+| `references/typography-and-shape.md` | Type scale, shape, elevation, motion |
+| `references/navigation-patterns.md` | Navigation selection, Compose-first adaptive patterns |
+| `references/layout-and-responsive.md` | Breakpoints, canonical layouts, insets, foldables |
+| **CMP-Specific References** | |
+| `references/cmp-dependencies.md` | Maven coordinates CMP vs Jetpack, feature parity, version sync |
+| `references/cmp-dynamic-color.md` | Dynamic color fallbacks, expect/actual, iOS/Desktop strategy |
+| `references/cmp-system-integration.md` | Insets, safe area, status bar, system fonts, Context-free patterns |
+| `references/cmp-platform-adaptation.md` | Platform-specific behavior, M3-pure vs native adaptation |
+| `references/cmp-component-architecture.md` | MVI/MVVM wiring for Snackbar, BottomSheet, Dialog; NavigationSuiteScaffold; M2→M3 migration |
 
-## Contributing
+## Credits
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for platform hierarchy (Compose-first), Expressive rules, and a PR checklist so documentation stays consistent.
+Original skill by [hamen](https://github.com/hamen). This fork extends it for the Compose Multiplatform community.
 
 ## License
 

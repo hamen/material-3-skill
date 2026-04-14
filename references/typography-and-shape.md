@@ -10,23 +10,23 @@ MD3 uses 15 baseline styles + 15 emphasized styles organized in 5 categories (Di
 
 #### Baseline Type Scale (Default Values)
 
-| Style | Font | Weight | Size (sp) | Size (rem) | Line Height | Tracking |
-|-------|------|--------|-----------|------------|-------------|----------|
-| Display Large | Roboto | 400 | 57 | 3.5625 | 64sp / 4rem | -0.25px |
-| Display Medium | Roboto | 400 | 45 | 2.8125 | 52sp / 3.25rem | 0 |
-| Display Small | Roboto | 400 | 36 | 2.25 | 44sp / 2.75rem | 0 |
-| Headline Large | Roboto | 400 | 32 | 2 | 40sp / 2.5rem | 0 |
-| Headline Medium | Roboto | 400 | 28 | 1.75 | 36sp / 2.25rem | 0 |
-| Headline Small | Roboto | 400 | 24 | 1.5 | 32sp / 2rem | 0 |
-| Title Large | Roboto | 400 | 22 | 1.375 | 28sp / 1.75rem | 0 |
-| Title Medium | Roboto | 500 | 16 | 1 | 24sp / 1.5rem | 0.15px |
-| Title Small | Roboto | 500 | 14 | 0.875 | 20sp / 1.25rem | 0.1px |
-| Body Large | Roboto | 400 | 16 | 1 | 24sp / 1.5rem | 0.5px |
-| Body Medium | Roboto | 400 | 14 | 0.875 | 20sp / 1.25rem | 0.25px |
-| Body Small | Roboto | 400 | 12 | 0.75 | 16sp / 1rem | 0.4px |
-| Label Large | Roboto | 500 | 14 | 0.875 | 20sp / 1.25rem | 0.1px |
-| Label Medium | Roboto | 500 | 12 | 0.75 | 16sp / 1rem | 0.5px |
-| Label Small | Roboto | 500 | 11 | 0.6875 | 16sp / 1rem | 0.5px |
+| Style | Font | Weight | Size (sp) | Line Height | Tracking |
+|-------|------|--------|-----------|-------------|----------|
+| Display Large | Roboto | 400 | 57 | 64sp | -0.25px |
+| Display Medium | Roboto | 400 | 45 | 52sp | 0 |
+| Display Small | Roboto | 400 | 36 | 44sp | 0 |
+| Headline Large | Roboto | 400 | 32 | 40sp | 0 |
+| Headline Medium | Roboto | 400 | 28 | 36sp | 0 |
+| Headline Small | Roboto | 400 | 24 | 32sp | 0 |
+| Title Large | Roboto | 400 | 22 | 28sp | 0 |
+| Title Medium | Roboto | 500 | 16 | 24sp | 0.15px |
+| Title Small | Roboto | 500 | 14 | 20sp | 0.1px |
+| Body Large | Roboto | 400 | 16 | 24sp | 0.5px |
+| Body Medium | Roboto | 400 | 14 | 20sp | 0.25px |
+| Body Small | Roboto | 400 | 12 | 16sp | 0.4px |
+| Label Large | Roboto | 500 | 14 | 20sp | 0.1px |
+| Label Medium | Roboto | 500 | 12 | 16sp | 0.5px |
+| Label Small | Roboto | 500 | 11 | 16sp | 0.5px |
 
 #### Emphasized Type Styles (Expressive Update)
 
@@ -40,75 +40,13 @@ To use: swap the baseline token for the emphasized version:
 - Baseline: `md.sys.typescale.display-large`
 - Emphasized: `md.sys.typescale.emphasized.display-large`
 
-### CSS Custom Properties
-
-Each type style maps to individual axis tokens:
-
-```css
-/* Example: Body Large */
---md-sys-typescale-body-large-font: 'Roboto', sans-serif;
---md-sys-typescale-body-large-weight: 400;
---md-sys-typescale-body-large-size: 1rem;        /* 16sp */
---md-sys-typescale-body-large-line-height: 1.5rem; /* 24sp */
---md-sys-typescale-body-large-tracking: 0.03125rem; /* 0.5px */
-
-/* Example: Title Medium */
---md-sys-typescale-title-medium-font: 'Roboto', sans-serif;
---md-sys-typescale-title-medium-weight: 500;
---md-sys-typescale-title-medium-size: 1rem;
---md-sys-typescale-title-medium-line-height: 1.5rem;
---md-sys-typescale-title-medium-tracking: 0.009375rem;
-
-/* Example: Label Large (used for buttons) */
---md-sys-typescale-label-large-font: 'Roboto', sans-serif;
---md-sys-typescale-label-large-weight: 500;
---md-sys-typescale-label-large-size: 0.875rem;
---md-sys-typescale-label-large-line-height: 1.25rem;
---md-sys-typescale-label-large-tracking: 0.00625rem;
-```
-
-### Using Type Styles in CSS
-
-Apply using individual properties:
-
-```css
-.headline {
-  font-family: var(--md-sys-typescale-headline-large-font);
-  font-weight: var(--md-sys-typescale-headline-large-weight);
-  font-size: var(--md-sys-typescale-headline-large-size);
-  line-height: var(--md-sys-typescale-headline-large-line-height);
-  letter-spacing: var(--md-sys-typescale-headline-large-tracking);
-}
-```
-
-Or use the shorthand font property for convenience (note: requires defining the shorthand token):
-
-```css
-.headline {
-  font: var(--md-sys-typescale-headline-large-weight)
-        var(--md-sys-typescale-headline-large-size) /
-        var(--md-sys-typescale-headline-large-line-height)
-        var(--md-sys-typescale-headline-large-font);
-  letter-spacing: var(--md-sys-typescale-headline-large-tracking);
-}
-```
-
 ### Typeface Customization
 
 MD3 uses two typeface roles:
 - **Brand**: Used for Display and Headline styles (expression-focused)
 - **Plain**: Used for Title, Body, and Label styles (readability-focused)
 
-Both default to Roboto. To customize:
-
-```css
-:root {
-  /* Brand typeface for display/headline */
-  --md-ref-typeface-brand: 'Your Display Font', sans-serif;
-  /* Plain typeface for body/label/title */
-  --md-ref-typeface-plain: 'Your Body Font', sans-serif;
-}
-```
+Both default to Roboto.
 
 ### Roboto Flex
 
@@ -117,23 +55,11 @@ Roboto Flex is a variable font supporting multiple axes:
 - **Width** (wdth): 25–151
 - **Optical size** (opsz): 8–144
 
-```css
-@font-face {
-  font-family: 'Roboto Flex';
-  src: url('RobotoFlex-VariableFont.woff2') format('woff2');
-  font-weight: 100 1000;
-  font-stretch: 25% 151%;
-}
-```
-
 ### Font Size Units
 
 | Platform | Unit | Conversion |
 |----------|------|------------|
 | Android | sp | 1:1 |
-| Web | rem | sp / 16 = rem (assuming 16px root) |
-
-Examples: 10sp = 0.625rem, 12sp = 0.75rem, 14sp = 0.875rem, 16sp = 1rem, 24sp = 1.5rem
 
 ### Component Type Usage
 
@@ -160,35 +86,18 @@ Examples: 10sp = 0.625rem, 12sp = 0.75rem, 14sp = 0.875rem, 16sp = 1rem, 24sp = 
 
 ### Corner Radius Scale
 
-| Token | Value (dp) | Value (px/CSS) | Default components |
-|-------|-----------|----------------|-------------------|
-| `none` | 0 | 0px | — |
-| `extra-small` | 4 | 4px | Snackbar |
-| `small` | 8 | 8px | Text fields, menus, chips |
-| `medium` | 12 | 12px | Cards |
-| `large` | 16 | 16px | FAB, extended FAB, nav drawer |
-| `large-increased` | 20 | 20px | (Expressive update) |
-| `extra-large` | 28 | 28px | Dialogs, bottom sheets, side sheets |
-| `extra-large-increased` | 32 | 32px | (Expressive update) |
-| `extra-extra-large` | 48 | 48px | (Expressive update) |
-| `full` | — | 9999px | Buttons, badges, pills, sliders |
-
-### CSS Custom Properties
-
-```css
-:root {
-  --md-sys-shape-corner-none: 0px;
-  --md-sys-shape-corner-extra-small: 4px;
-  --md-sys-shape-corner-small: 8px;
-  --md-sys-shape-corner-medium: 12px;
-  --md-sys-shape-corner-large: 16px;
-  --md-sys-shape-corner-large-increased: 20px;
-  --md-sys-shape-corner-extra-large: 28px;
-  --md-sys-shape-corner-extra-large-increased: 32px;
-  --md-sys-shape-corner-extra-extra-large: 48px;
-  --md-sys-shape-corner-full: 9999px;
-}
-```
+| Token | Value (dp) | Default components |
+|-------|-----------|-------------------|
+| `none` | 0 | — |
+| `extra-small` | 4 | Snackbar |
+| `small` | 8 | Text fields, menus, chips |
+| `medium` | 12 | Cards |
+| `large` | 16 | FAB, extended FAB, nav drawer |
+| `large-increased` | 20 | (Expressive update) |
+| `extra-large` | 28 | Dialogs, bottom sheets, side sheets |
+| `extra-large-increased` | 32 | (Expressive update) |
+| `extra-extra-large` | 48 | (Expressive update) |
+| `full` | — | Buttons, badges, pills, sliders |
 
 ### Component Shape Mapping
 
@@ -219,7 +128,7 @@ In the M3 Expressive update, components can morph between shapes on interaction:
 - Selected states can change shape
 - Loading indicators use shape morphing to show progress
 
-**Platform notes**: Shape morphing is **not** in `@material/web` ([Material Web is maintenance-only; Expressive not on Web](https://m3.material.io/develop/web)). **Jetpack Compose** is where Google documents expressive shape/motion behavior for Android. **Flutter:** check current Material 3 / expressive docs for your SDK. **Web:** approximate with CSS transitions on `border-radius`.
+**Platform notes**: Shape morphing is documented in **Jetpack Compose** as part of Google's expressive shape/motion rollout for Android. Check current M3 Expressive documentation for latest API availability in Compose Multiplatform.
 
 ## Elevation
 
@@ -252,27 +161,6 @@ Shadows are only appropriate when:
 - Additional depth cue is needed beyond color (e.g., overlapping elements)
 - The platform convention expects shadows (some Android components)
 
-### CSS Shadow Values
-
-When shadows are needed:
-
-```css
-/* Level 1 */
-box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
-
-/* Level 2 */
-box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
-
-/* Level 3 */
-box-shadow: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3);
-
-/* Level 4 */
-box-shadow: 0 6px 10px 4px rgba(0,0,0,0.15), 0 2px 3px rgba(0,0,0,0.3);
-
-/* Level 5 */
-box-shadow: 0 8px 12px 6px rgba(0,0,0,0.15), 0 4px 4px rgba(0,0,0,0.3);
-```
-
 ### Component Elevation Mapping
 
 | Level | Components at Rest |
@@ -292,23 +180,23 @@ MD3 Expressive (May 2025) introduced spring-based motion physics for component a
 
 - Springs have no fixed duration — they respond dynamically to input
 - Two schemes: **standard** (utilitarian) and **expressive** (bouncy)
-- **Jetpack Compose** exposes motion schemes / spring-oriented APIs in current Material3 (see `MotionScheme` and your BOM). **MDC-Android** may differ by version. **Web:** Material Web does not implement Expressive motion physics — use easing/duration or custom CSS/JS. **Flutter:** check your Flutter/Material version for parity.
+- **Jetpack Compose** exposes motion schemes / spring-oriented APIs in current Material3 (see `MotionScheme` and your BOM). Check Compose Multiplatform releases for API availability.
 
 ### Easing and Duration (Transitions)
 
-The easing/duration system is used for **transitions** (entering, exiting, shared-axis) and as a web fallback:
+The easing/duration system is used for **transitions** (entering, exiting, shared-axis):
 
 #### Easing Sets
 
 **Emphasized** (recommended for most transitions — captures the MD3 style):
-| Type | CSS Cubic-bezier | Use |
+| Type | Cubic-bezier | Use |
 |------|-----------------|-----|
 | Emphasized | `cubic-bezier(0.2, 0, 0, 1)` | Begin and end on screen |
 | Emphasized Decelerate | `cubic-bezier(0.05, 0.7, 0.1, 1)` | Enter the screen |
 | Emphasized Accelerate | `cubic-bezier(0.3, 0, 0.8, 0.15)` | Exit the screen |
 
-**Standard** (for utility transitions, web fallback):
-| Type | CSS Cubic-bezier | Use |
+**Standard** (for utility transitions):
+| Type | Cubic-bezier | Use |
 |------|-----------------|-----|
 | Standard | `cubic-bezier(0.2, 0, 0, 1)` | Begin and end on screen |
 | Standard Decelerate | `cubic-bezier(0, 0, 0, 1)` | Enter the screen |
@@ -344,57 +232,3 @@ The easing/duration system is used for **transitions** (entering, exiting, share
 | Element exits permanently | Emphasized Accelerate | 200ms |
 | Element exits temporarily | Emphasized | 300ms |
 | Small utility transition | Standard | 300ms |
-
-### CSS Implementation
-
-```css
-:root {
-  /* Easing */
-  --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
-  --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
-  --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
-  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
-  --md-sys-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
-  --md-sys-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
-
-  /* Duration */
-  --md-sys-motion-duration-short1: 50ms;
-  --md-sys-motion-duration-short2: 100ms;
-  --md-sys-motion-duration-short3: 150ms;
-  --md-sys-motion-duration-short4: 200ms;
-  --md-sys-motion-duration-medium1: 250ms;
-  --md-sys-motion-duration-medium2: 300ms;
-  --md-sys-motion-duration-medium3: 350ms;
-  --md-sys-motion-duration-medium4: 400ms;
-  --md-sys-motion-duration-long1: 450ms;
-  --md-sys-motion-duration-long2: 500ms;
-  --md-sys-motion-duration-long3: 550ms;
-  --md-sys-motion-duration-long4: 600ms;
-  --md-sys-motion-duration-extra-long1: 700ms;
-  --md-sys-motion-duration-extra-long2: 800ms;
-  --md-sys-motion-duration-extra-long3: 900ms;
-  --md-sys-motion-duration-extra-long4: 1000ms;
-}
-
-/* Example: dialog enter */
-.md3-dialog-enter {
-  animation: dialog-enter var(--md-sys-motion-duration-medium4)
-             var(--md-sys-motion-easing-emphasized-decelerate);
-}
-
-@keyframes dialog-enter {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* Example: fade out */
-.md3-fade-out {
-  animation: fade-out var(--md-sys-motion-duration-short4)
-             var(--md-sys-motion-easing-emphasized-accelerate);
-}
-
-@keyframes fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-```
