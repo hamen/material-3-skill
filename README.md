@@ -1,6 +1,6 @@
 # Material Design 3 Skill
 
-**Version 1.0.0 · released 2026-05-20** — Portable skill layout with Claude Code one-command plugin install and manual install support for Codex or other skill loaders.
+**Version 1.1.0 · released 2026-05-20** — Adds Google I/O 2026 Material guidance for expressive layout, spacing, Compose-first Android, and updated expressive components.
 
 A comprehensive skill for AI coding assistants that can load `SKILL.md` files, covering Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
 
@@ -10,11 +10,13 @@ A comprehensive skill for AI coding assistants that can load `SKILL.md` files, c
 
 ## What's new
 
-### Unreleased
+### 1.1.0 — 2026-05-20
 
 **Updated — Google I/O 2026 Material guidance.**
 
 - Added notes from [What’s new at Google I/O 2026](https://m3.material.io/blog/whats-new-at-io26): Expressive layout/scaffold, the 8dp spacing system, watch/XR form factors, expressive lists and menus, Compose-first Material Android, and expressive search/search app bar.
+
+Read the full release notes: [v1.1.0](https://github.com/hamen/material-3-skill/releases/tag/v1.1.0).
 
 ### 1.0.0 — 2026-05-20
 
