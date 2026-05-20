@@ -1,8 +1,8 @@
-# Material Design 3 Skill for Claude Code
+# Material Design 3 Skill
 
-**Version 1.0.0 · released 2026-05-20** — Initial Claude Code plugin release with one-command install via `claude plugin install github:hamen/material-3-skill`.
+**Version 1.0.0 · released 2026-05-20** — Portable skill layout with Claude Code one-command plugin install and manual install support for Codex or other skill loaders.
 
-A comprehensive [Claude Code](https://claude.ai/claude-code) skill for implementing Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
+A comprehensive skill for AI coding assistants that can load `SKILL.md` files, covering Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
 
 [![Material Design 3](assets/m3-hero.png)](https://m3.material.io/)
 
@@ -12,11 +12,11 @@ A comprehensive [Claude Code](https://claude.ai/claude-code) skill for implement
 
 ### 1.0.0 — 2026-05-20
 
-**Added — Claude Code plugin packaging.**
+**Added — portable skill packaging.**
 
-- **One-command install**: install directly with `claude plugin install github:hamen/material-3-skill`.
-- **Plugin discovery layout**: the skill now lives at `skills/material-3/SKILL.md`, with references under `skills/material-3/references/`.
-- **Plugin manifest**: `.claude-plugin/plugin.json` declares the `material-3` plugin metadata for Claude Code.
+- **Claude Code one-command install**: install directly with `claude plugin install github:hamen/material-3-skill`.
+- **Portable skill layout**: the skill now lives at `skills/material-3/SKILL.md`, with references under `skills/material-3/references/`.
+- **Plugin manifest**: `.claude-plugin/plugin.json` declares the `material-3` plugin metadata for Claude Code while keeping the skill content usable by other skill-aware assistants.
 
 Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/releases/tag/v1.0.0).
 
@@ -43,7 +43,7 @@ Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/
 
 ## What it does
 
-- Guides Claude in generating **MD3-compliant UI** with correct design tokens, components, theming, layout, and accessibility
+- Guides AI coding assistants in generating **MD3-compliant UI** with correct design tokens, components, theming, layout, and accessibility
 - **Primary focus: Jetpack Compose** — `MaterialTheme`, Material 3 composables, adaptive layouts, edge-to-edge/insets, and current Compose Material3 patterns
 - Also covers **Flutter** (`useMaterial3`, `ColorScheme.fromSeed`, etc.) at a secondary level
 - **Web (`@material/web`)** is documented as a **limited** path: [Material Web is in maintenance mode](https://m3.material.io/develop/web) and **M3 Expressive is not implemented on Web**; use tokens and components knowing the ecosystem is not receiving active feature work
@@ -61,7 +61,7 @@ Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/
 
 ## How this skill was built
 
-This skill was created collaboratively between a human and [Claude Code](https://claude.ai/claude-code) (Anthropic's coding agent). The information in the skill files is **distilled from publicly available sources** — it is not original design system documentation, but a curated reference assembled from official docs, library references, and training data.
+This skill was created collaboratively between a human and an AI coding agent. The information in the skill files is **distilled from publicly available sources** — it is not original design system documentation, but a curated reference assembled from official docs, library references, and training data.
 
 ### Sources
 
@@ -69,7 +69,7 @@ Design token values, component specs, layout breakpoints, color roles, typograph
 
 - **[m3.material.io](https://m3.material.io/)** — Google's official Material Design 3 documentation
 - **[Android Developers — Material Design 3 in Compose](https://developer.android.com/develop/ui/compose/designsystems/material3)** and **AndroidX Compose Material3** API references
-- **Claude's training data** — publicly available Material Design documentation, Flutter and Jetpack Compose documentation, `@material/web` references, and community guides
+- **Model training data** — publicly available Material Design documentation, Flutter and Jetpack Compose documentation, `@material/web` references, and community guides
 - **[@material/web](https://github.com/material-components/material-web)** — used to verify web component element names, attributes, and import paths where web guidance is included
 
 ### Process
@@ -95,8 +95,26 @@ The skill is a **best-effort distillation** and may drift as Google updates the 
 
 ## Installation
 
+### Claude Code
+
 ```bash
 claude plugin install github:hamen/material-3-skill
+```
+
+### Codex or manual skill install
+
+Clone the repository, then link or copy `skills/material-3` into the skills directory your assistant reads:
+
+```bash
+git clone https://github.com/hamen/material-3-skill.git
+cd material-3-skill
+
+# Codex
+mkdir -p ~/.codex/skills
+ln -s "$(pwd)/skills/material-3" ~/.codex/skills/material-3
+
+# Other SKILL.md loaders
+ln -s "$(pwd)/skills/material-3" /path/to/your/skills/material-3
 ```
 
 ## Usage
