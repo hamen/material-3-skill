@@ -8,6 +8,12 @@ Use **`androidx.compose.material3`**: `NavigationBar`, `NavigationRail`, `Naviga
 
 Wire destinations with **Navigation Compose** (`NavHost`, `composable`, `rememberNavController`). For **adaptive** UIs, use **`calculateWindowSizeClass`**, **`androidx.compose.material3.adaptive`**, or **`currentWindowAdaptiveInfo`** / **`NavigableListDetailPaneScaffold`** (names and packages depend on your BOM — check [Android Developers](https://developer.android.com/jetpack/androidx/releases/compose-material3)).
 
+Material's [I/O 2026 update](https://m3.material.io/blog/whats-new-at-io26) adds expressive/adaptive emphasis:
+
+- Prefer expressive/adaptive scaffolds for mobile, desktop, foldables, watches, and XR rather than scaling one phone navigation model upward.
+- Expressive search and search app bars have refreshed visual style, motion, and more flexible trailing icon behavior. Use current Compose Material3 APIs where available; use web/CSS approximations only when targeting web.
+- Keep navigation spacing on the 8dp spacing system so rail/drawer/app-bar gaps can adapt by device class and density.
+
 ```kotlin
 // Conceptual — adapt routes and selection to your app
 Scaffold(
@@ -277,6 +283,8 @@ Overlays content with a scrim. Used on smaller screens or when content space is 
 ## Top App Bar
 
 **Use when**: Every screen needs a title and optional actions.
+
+**I/O 2026 note:** Search app bars are part of the current expressive search guidance. In Compose, check your Material3 BOM for expressive app bar and search APIs before hand-rolling. For web, combine a token-backed top app bar with a custom search field/view because Material Web does not expose full expressive search parity.
 
 ### Variants
 

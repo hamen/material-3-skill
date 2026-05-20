@@ -21,6 +21,16 @@ MD3 is built on three principles:
 - **Adaptive**: Layouts transform across 5 window size classes. Components resize, reposition, and change form factor responsively.
 - **Expressive**: Shape morphing, spring physics, and emphasized typography create moments of delight without sacrificing usability.
 
+## Current Updates: Google I/O 2026
+
+Material's [Google I/O 2026 update](https://m3.material.io/blog/whats-new-at-io26) reinforces a **Compose-first** Android path and expands expressive/adaptive guidance:
+
+- **Material Android is Compose-first**: For new Android work, prefer Jetpack Compose Material3 for the latest components, expressive APIs, adaptive scaffolds, and Styles API integration. Android Views may remain necessary in existing apps, but they should not be treated as the default path for new Material 3 implementations.
+- **Expressive layout system**: Use an expressive layout scaffold to adapt screens across mobile, desktop, foldables, watches, XR, and other spatial form factors. Start from adaptive scaffolds/window size classes instead of fixed phone-first layouts.
+- **8dp spacing system**: Apply spacing tokens for margins, padding, and gaps so layouts and components can adapt programmatically to device type and density.
+- **New/updated expressive components**: Lists, menus, search, and search app bars have refreshed expressive guidance, with Jetpack Compose as the primary implementation target.
+- **Watches and XR**: Watches emphasize physics-based motion, arc text, and edge-hugging containers. XR emphasizes spatial panels and depth-based elevation.
+
 **Key differences from MD2:**
 - Tonal surfaces replace elevation shadows as the primary depth cue
 - Dynamic color generates full schemes from a single seed color
@@ -536,12 +546,16 @@ The Expressive update adds visual richness while maintaining usability. **Availa
 
 | Capability | Jetpack Compose | Flutter | Web (`@material/web`) |
 |------------|-----------------|---------|------------------------|
+| Expressive layout scaffold / adaptive layout | Compose-first via Material3 adaptive APIs and window size classes | Use Flutter adaptive/layout primitives | CSS/container queries/manual layout; no Material Web parity |
+| 8dp spacing system | Use design tokens / `Dp` spacing constants; keep margins, padding, and gaps adaptive | Use theme spacing constants | CSS custom properties / design tokens |
+| Expressive lists, menus, search, search app bar | Primary target per current Material guidance; check BOM and opt-ins | Check current Flutter Material docs | Spec-aligned custom implementation; `@material/web` is maintenance-only |
 | Spring / motion physics | Supported in Material 3 (see `MotionScheme`, expressive APIs per BOM) | Varies by Flutter Material version | **Not** in Material Web; use easing/duration or custom motion |
 | Emphasized typography | Via theme / type scale | Via theme | Token/CSS only; no full Expressive component set |
 | Shape morphing | Compose-first in Google’s expressive rollout | Check current Flutter docs | **Not** in `@material/web` |
 | New button sizes (XS–XL), toggle | Follow Compose Material3 components | Follow Flutter MD3 | Height/CSS approximations only |
 | Extra corner tokens (e.g. large-increased) | `MaterialTheme.shapes` / tokens | Theme shapes | CSS `--md-sys-shape-*` |
 | 3 contrast levels | Scheme builders / system | Plugins / manual | `SchemeContent` contrast parameter in JS utilities |
+| Watches / XR form factors | Use Compose/Wear/XR-specific guidance where available | Platform-specific | Web/spatial UI custom implementation |
 
 **Web:** [Material Web is maintenance-only; M3 Expressive is not on Web](https://m3.material.io/develop/web). Use CSS easing/duration tokens as fallback for motion, not spring parity.
 

@@ -12,6 +12,41 @@ The **breakpoint table** below is a **design** reference. In **Jetpack Compose**
 
 ---
 
+## Google I/O 2026: Expressive Layout
+
+Material's [I/O 2026 update](https://m3.material.io/blog/whats-new-at-io26) introduced broader expressive/adaptive layout guidance:
+
+- **Expressive layout scaffold**: Design screens to adapt across mobile, desktop, foldables, watches, XR, and other spatial form factors. In Compose, prefer Material3 adaptive scaffolds and window size classes over hard-coded phone/tablet branches.
+- **8dp spacing system**: Treat spacing as tokens. Use an 8dp scale for margins, padding, gaps, and component spacing so density and device-class changes can be applied consistently.
+- **Watch guidance**: Use physics-based motion, arc text styles, and edge-hugging containers. Avoid shrinking phone layouts onto a round or compact wearable screen.
+- **XR guidance**: Use spatial panels and depth-based elevation. Avoid treating XR as only a larger desktop canvas; account for depth, comfort, and panel placement.
+
+### Spacing Token Pattern
+
+Define spacing once, then map it to context:
+
+```kotlin
+object MdSpacing {
+    val xxs = 4.dp
+    val xs = 8.dp
+    val sm = 16.dp
+    val md = 24.dp
+    val lg = 32.dp
+    val xl = 48.dp
+}
+```
+
+Use spacing tokens for:
+- Screen margins
+- Pane gaps
+- List item spacing
+- Card internal padding
+- Component groups and toolbars
+
+Do not scatter raw `Dp` literals throughout reusable UI. Keep one-off values local only when they are truly component-specific.
+
+---
+
 ## Window Size Classes
 
 MD3 defines 5 breakpoint classes:

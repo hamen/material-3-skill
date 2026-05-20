@@ -10,6 +10,12 @@ A comprehensive skill for AI coding assistants that can load `SKILL.md` files, c
 
 ## What's new
 
+### Unreleased
+
+**Updated — Google I/O 2026 Material guidance.**
+
+- Added notes from [What’s new at Google I/O 2026](https://m3.material.io/blog/whats-new-at-io26): Expressive layout/scaffold, the 8dp spacing system, watch/XR form factors, expressive lists and menus, Compose-first Material Android, and expressive search/search app bar.
+
 ### 1.0.0 — 2026-05-20
 
 **Added — portable skill packaging.**
@@ -49,7 +55,7 @@ Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/
 - **Web (`@material/web`)** is documented as a **limited** path: [Material Web is in maintenance mode](https://m3.material.io/develop/web) and **M3 Expressive is not implemented on Web**; use tokens and components knowing the ecosystem is not receiving active feature work
 - Covers **30+ components** with Compose-oriented mappings plus web element names where applicable, attributes, and examples in `skills/material-3/references/component-catalog.md`
 - Includes an **MD3 compliance audit** mode that scores apps across 10 categories (works for Compose/Kotlin, Flutter/Dart, and web/CSS)
-- Covers **M3 Expressive** (May 2025) with an explicit **per-platform** matrix — see [SKILL.md](skills/material-3/SKILL.md) and [typography-and-shape.md](skills/material-3/references/typography-and-shape.md)
+- Covers **M3 Expressive** plus the **Google I/O 2026** layout/component updates — see [SKILL.md](skills/material-3/SKILL.md), [layout-and-responsive.md](skills/material-3/references/layout-and-responsive.md), and [typography-and-shape.md](skills/material-3/references/typography-and-shape.md)
 
 ## Platform support
 
@@ -68,6 +74,7 @@ This skill was created collaboratively between a human and an AI coding agent. T
 Design token values, component specs, layout breakpoints, color roles, typography scales, and implementation patterns were gathered from:
 
 - **[m3.material.io](https://m3.material.io/)** — Google's official Material Design 3 documentation
+- **[What’s new at Google I/O 2026](https://m3.material.io/blog/whats-new-at-io26)** — Expressive layout, spacing, lists, menus, search, watch/XR, and Compose-first Android updates
 - **[Android Developers — Material Design 3 in Compose](https://developer.android.com/develop/ui/compose/designsystems/material3)** and **AndroidX Compose Material3** API references
 - **Model training data** — publicly available Material Design documentation, Flutter and Jetpack Compose documentation, `@material/web` references, and community guides
 - **[@material/web](https://github.com/material-components/material-web)** — used to verify web component element names, attributes, and import paths where web guidance is included

@@ -2,6 +2,14 @@
 
 Complete reference for Material Design 3 components. **Primary mappings:** Jetpack Compose (`androidx.compose.material3`) where most users ship UIs today; **web** uses `@material/web` element names and imports — [Material Web is maintenance-only](https://m3.material.io/develop/web).
 
+## Google I/O 2026 Component Updates
+
+Material's [I/O 2026 update](https://m3.material.io/blog/whats-new-at-io26) highlights refreshed expressive guidance for **lists**, **menus**, **search**, and **search app bars**, with Jetpack Compose as the primary implementation path. When implementing these in Android:
+
+- Prefer current `androidx.compose.material3` components and verify expressive APIs against the active Material3 BOM.
+- Expect expressive variants to include richer visual style, motion, and flexible configuration.
+- Treat web implementations as spec-aligned approximations unless Material Web exposes an equivalent component; Material Web remains maintenance-only.
+
 ## Actions
 
 ### Buttons
@@ -435,6 +443,8 @@ Two types:
 **Elements**: `md-menu`, `md-menu-item`, `md-sub-menu`
 **Import**: `@material/web/menu/menu.js`, `@material/web/menu/menu-item.js`
 
+**I/O 2026 note:** Expressive menus have updated Material guidance for more flexible, vibrant configurations. In Jetpack Compose, prefer current Material3 menu APIs and expressive variants when available in your BOM. On web, use `md-menu` / `md-menu-item` for token-backed menus, or build custom spec-aligned variants when expressive behavior is required.
+
 | Attribute (menu) | Type | Description |
 |-----------------|------|-------------|
 | `anchor` | string | ID of the anchor element |
@@ -745,6 +755,8 @@ OutlinedTextField(
 - **Search bar**: Persistent search field in top app bar area
 - **Search view**: Expandable search overlay with suggestions
 
+**I/O 2026 note:** Expressive search and search app bar guidance adds a refreshed visual style, motion, and more flexible trailing icon behavior. In Jetpack Compose, use the current Material3 search APIs and expressive app bar variants where available. On web, implement search as a custom component using MD3 shape, color, spacing, and motion tokens.
+
 ### Tabs
 **Elements**: `md-tabs`, `md-primary-tab`, `md-secondary-tab`
 **Import**: `@material/web/tabs/tabs.js`, `@material/web/tabs/primary-tab.js`, `@material/web/tabs/secondary-tab.js`
@@ -781,6 +793,8 @@ OutlinedTextField(
 ### List
 **Elements**: `md-list`, `md-list-item`
 **Import**: `@material/web/list/list.js`, `@material/web/list/list-item.js`
+
+**I/O 2026 note:** Expressive lists add more vibrant styles and flexible item configurations. In Compose, prefer Material3 list patterns and keep spacing, leading/trailing content, supporting text, and dividers token-driven. On web, `md-list` is useful for standard lists; custom CSS may be needed for expressive list treatments.
 
 | Attribute (list-item) | Type | Description |
 |----------------------|------|-------------|
