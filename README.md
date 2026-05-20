@@ -1,11 +1,30 @@
 # Material Design 3 Skill for Claude Code
 
+**Version 1.0.0 · released 2026-05-20** — Initial Claude Code plugin release with one-command install via `claude plugin install github:hamen/material-3-skill`.
+
 A comprehensive [Claude Code](https://claude.ai/claude-code) skill for implementing Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
 
 [![Material Design 3](assets/m3-hero.png)](https://m3.material.io/)
 
+---
+
+## What's new
+
+### 1.0.0 — 2026-05-20
+
+**Added — Claude Code plugin packaging.**
+
+- **One-command install**: install directly with `claude plugin install github:hamen/material-3-skill`.
+- **Plugin discovery layout**: the skill now lives at `skills/material-3/SKILL.md`, with references under `skills/material-3/references/`.
+- **Plugin manifest**: `.claude-plugin/plugin.json` declares the `material-3` plugin metadata for Claude Code.
+
+Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/releases/tag/v1.0.0).
+
+---
+
 ## Table of contents
 
+- [What's new](#whats-new)
 - [What it does](#what-it-does)
 - [Platform support](#platform-support)
 - [How this skill was built](#how-this-skill-was-built)
