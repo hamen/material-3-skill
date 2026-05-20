@@ -28,9 +28,9 @@ A comprehensive [Claude Code](https://claude.ai/claude-code) skill for implement
 - **Primary focus: Jetpack Compose** — `MaterialTheme`, Material 3 composables, adaptive layouts, edge-to-edge/insets, and current Compose Material3 patterns
 - Also covers **Flutter** (`useMaterial3`, `ColorScheme.fromSeed`, etc.) at a secondary level
 - **Web (`@material/web`)** is documented as a **limited** path: [Material Web is in maintenance mode](https://m3.material.io/develop/web) and **M3 Expressive is not implemented on Web**; use tokens and components knowing the ecosystem is not receiving active feature work
-- Covers **30+ components** with Compose-oriented mappings plus web element names where applicable, attributes, and examples in `references/component-catalog.md`
+- Covers **30+ components** with Compose-oriented mappings plus web element names where applicable, attributes, and examples in `skills/material-3/references/component-catalog.md`
 - Includes an **MD3 compliance audit** mode that scores apps across 10 categories (works for Compose/Kotlin, Flutter/Dart, and web/CSS)
-- Covers **M3 Expressive** (May 2025) with an explicit **per-platform** matrix — see [SKILL.md](SKILL.md) and [references/typography-and-shape.md](references/typography-and-shape.md)
+- Covers **M3 Expressive** (May 2025) with an explicit **per-platform** matrix — see [SKILL.md](skills/material-3/SKILL.md) and [typography-and-shape.md](skills/material-3/references/typography-and-shape.md)
 
 ## Platform support
 
@@ -55,7 +55,7 @@ Design token values, component specs, layout breakpoints, color roles, typograph
 
 ### Process
 
-1. **Planning phase** — Main `SKILL.md` plus focused reference files under `references/`.
+1. **Planning phase** — Main `skills/material-3/SKILL.md` plus focused reference files under `skills/material-3/references/`.
 
 2. **Live site research** — m3.material.io is often a JavaScript-rendered SPA; browser automation helps verify current token values, component lists, and Expressive updates.
 
@@ -71,25 +71,13 @@ The skill is a **best-effort distillation** and may drift as Google updates the 
 
 - **Compose** guidance is prioritized for currency; prefer official Android docs for exact API signatures and BOM versions.
 - **Web**: Material Web is [in maintenance mode](https://m3.material.io/develop/web); M3 Expressive is **not** on Web. Examples may lag; verify against the [material-web](https://github.com/material-components/material-web) repo.
-- **M3 Expressive** (motion, emphasized type, shape morphing, new radii) varies by platform — see the Expressive sections in [SKILL.md](SKILL.md).
+- **M3 Expressive** (motion, emphasized type, shape morphing, new radii) varies by platform — see the Expressive sections in [SKILL.md](skills/material-3/SKILL.md).
 - Contributions and corrections are welcome.
 
 ## Installation
 
-Copy the skill into your Claude Code skills directory:
-
 ```bash
-# Clone the repo
-git clone https://github.com/hamen/material-3-skill.git
-
-# Copy to Claude Code skills directory
-cp -r material-3-skill ~/.claude/skills/material-3
-```
-
-Or symlink for easy updates:
-
-```bash
-ln -s /path/to/material-3-skill ~/.claude/skills/material-3
+claude plugin install github:hamen/material-3-skill
 ```
 
 ## Usage
@@ -118,19 +106,20 @@ ln -s /path/to/material-3-skill ~/.claude/skills/material-3
 /material-3 audit [URL or file path]
 ```
 
-The audit scores your app across 10 categories (color tokens, typography, shape, elevation, components, layout, navigation, motion, accessibility, theming) and produces a detailed report with specific fixes. Targets may be **Compose/Kotlin**, **Flutter**, or **web** — see [SKILL.md](SKILL.md) for per-stack checks.
+The audit scores your app across 10 categories (color tokens, typography, shape, elevation, components, layout, navigation, motion, accessibility, theming) and produces a detailed report with specific fixes. Targets may be **Compose/Kotlin**, **Flutter**, or **web** — see [SKILL.md](skills/material-3/SKILL.md) for per-stack checks.
 
 ## What's included
 
 | File | Description |
 |------|-------------|
-| `SKILL.md` | Main skill: philosophy, decision trees, token overview, component table, Compose-first notes, limited web patterns, audit procedure |
-| `references/color-system.md` | Color roles, tonal palettes, dynamic color, baseline schemes (Compose + CSS) |
-| `references/component-catalog.md` | Components with Compose mappings and `@material/web` where applicable |
-| `references/theming-and-dynamic-color.md` | Theme generation, brand colors, dark mode — Compose first, then Flutter and web |
-| `references/typography-and-shape.md` | Type scale, shape, elevation, motion — including Expressive platform notes |
-| `references/navigation-patterns.md` | Nav selection, Compose-first patterns, responsive shell |
-| `references/layout-and-responsive.md` | Breakpoints, canonical layouts, edge-to-edge/insets, foldables |
+| `.claude-plugin/plugin.json` | Claude Code plugin manifest for one-command installation |
+| `skills/material-3/SKILL.md` | Main skill: philosophy, decision trees, token overview, component table, Compose-first notes, limited web patterns, audit procedure |
+| `skills/material-3/references/color-system.md` | Color roles, tonal palettes, dynamic color, baseline schemes (Compose + CSS) |
+| `skills/material-3/references/component-catalog.md` | Components with Compose mappings and `@material/web` where applicable |
+| `skills/material-3/references/theming-and-dynamic-color.md` | Theme generation, brand colors, dark mode — Compose first, then Flutter and web |
+| `skills/material-3/references/typography-and-shape.md` | Type scale, shape, elevation, motion — including Expressive platform notes |
+| `skills/material-3/references/navigation-patterns.md` | Nav selection, Compose-first patterns, responsive shell |
+| `skills/material-3/references/layout-and-responsive.md` | Breakpoints, canonical layouts, edge-to-edge/insets, foldables |
 | `CONTRIBUTING.md` | How to contribute without drifting the Compose-first story |
 
 ## Contributing
