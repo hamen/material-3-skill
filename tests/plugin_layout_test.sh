@@ -48,6 +48,11 @@ expect_absent "references"
 expect_contains "README.md" "claude plugin install github:hamen/material-3-skill"
 expect_contains "README.md" "skills/material-3/SKILL.md"
 
+# OpenCode
+expect_file "opencode.json"
+expect_contains "opencode.json" '"skills"'
+expect_contains "README.md" "OpenCode"
+
 if [[ "$failures" -gt 0 ]]; then
   printf '\n%d plugin layout check(s) failed.\n' "$failures"
   exit 1
