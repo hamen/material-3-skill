@@ -1,6 +1,6 @@
 # Contributing
 
-This repo is a **Claude Code skill**: markdown that guides agents to produce **Material Design 3**–aligned UI. Keep changes **accurate**, **minimal**, and aligned with the **Compose-first** story in [README.md](README.md).
+This repo is a **portable skill**: markdown that guides agents to produce **Material Design 3**–aligned UI. Compatible with OpenCode, Claude Code, and any assistant that reads `SKILL.md`. Keep changes **accurate**, **minimal**, and aligned with the **Compose-first** story in [README.md](README.md).
 
 ## Platform hierarchy (do not invert)
 

@@ -9,6 +9,7 @@ if ! command -v jq >/dev/null 2>&1; then
 fi
 
 jq -e . .claude-plugin/plugin.json >/dev/null
+jq -e . opencode.json >/dev/null
 bash tests/plugin_layout_test.sh
 
 printf 'CI checks passed.\n'

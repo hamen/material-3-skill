@@ -2,7 +2,7 @@
 
 **Version 1.1.0 · released 2026-05-20** — Adds Google I/O 2026 Material guidance for expressive layout, spacing, Compose-first Android, and updated expressive components.
 
-A comprehensive skill for AI coding assistants that can load `SKILL.md` files, covering Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
+A portable skill for AI coding assistants covering Google's [Material Design 3](https://m3.material.io/) (Material You) UI system. Compatible with **OpenCode**, **Claude Code**, and any assistant that reads `SKILL.md` files.
 
 [![Material Design 3](assets/m3-hero.png)](https://m3.material.io/)
 
@@ -104,6 +104,34 @@ The skill is a **best-effort distillation** and may drift as Google updates the 
 
 ## Installation
 
+### OpenCode
+
+**Option A — clone and run from the repo directory** (skill auto-discovered via `opencode.json`):
+
+```bash
+git clone https://github.com/hamen/material-3-skill.git
+cd material-3-skill
+opencode  # must be run from the repo root — skill is discovered via opencode.json
+```
+
+**Option B — register the skill path globally** (recommended for reuse across projects). Add to `~/.config/opencode/opencode.json`:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": {
+    "paths": ["/path/to/material-3-skill/skills"]
+  }
+}
+```
+
+**Option C — symlink to external skills directory** (auto-loaded by OpenCode):
+
+```bash
+git clone https://github.com/hamen/material-3-skill.git
+ln -s "$(pwd)/material-3-skill/skills/material-3" ~/.claude/skills/material-3
+```
+
 ### Claude Code
 
 ```bash
@@ -158,6 +186,7 @@ The audit scores your app across 10 categories (color tokens, typography, shape,
 
 | File | Description |
 |------|-------------|
+| `opencode.json` | OpenCode config: auto-discovers the skill from the `skills/` directory |
 | `.claude-plugin/plugin.json` | Claude Code plugin manifest for one-command installation |
 | `skills/material-3/SKILL.md` | Main skill: philosophy, decision trees, token overview, component table, Compose-first notes, limited web patterns, audit procedure |
 | `skills/material-3/references/color-system.md` | Color roles, tonal palettes, dynamic color, baseline schemes (Compose + CSS) |
