@@ -36,6 +36,8 @@ Read the full release notes: [v1.1.0](https://github.com/hamen/material-3-skill/
 - **Portable skill layout**: the skill now lives at `skills/material-3/SKILL.md`, with references under `skills/material-3/references/`.
 - **Plugin manifest**: `.claude-plugin/plugin.json` declares the `material-3` plugin metadata for Claude Code while keeping the skill content usable by other skill-aware assistants.
 
+> **Superseded in 1.1.1.** The `claude plugin install github:…` command above never worked and the plugin manifest has moved — use the current commands in [Installation](#installation).
+
 Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/releases/tag/v1.0.0).
 
 ---

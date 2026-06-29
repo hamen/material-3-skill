@@ -18,6 +18,12 @@ if [[ ! -f "$plugin_path/.claude-plugin/plugin.json" ]]; then
   exit 1
 fi
 
+# Guard against the wrong nested layout (skills/<plugin>/skills/...).
+if [[ -d "$plugin_path/skills" ]]; then
+  printf 'unexpected nested skills/ directory inside %s\n' "$plugin_path" >&2
+  exit 1
+fi
+
 # Strict schema validation when the Claude Code CLI is available.
 if command -v claude >/dev/null 2>&1; then
   claude plugin validate --strict .claude-plugin/marketplace.json
