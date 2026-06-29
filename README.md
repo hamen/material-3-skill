@@ -22,9 +22,9 @@ Read the full release notes: [v1.1.0](https://github.com/hamen/material-3-skill/
 
 **Added — portable skill packaging.**
 
-- **Claude Code one-command install**: install directly with `claude plugin install github:hamen/material-3-skill`.
+- **Claude Code install**: install via `npx skills` or `/plugin add hamen/material-3-skill --subdir skills/material-3` (see [Installation](#installation)).
 - **Portable skill layout**: the skill now lives at `skills/material-3/SKILL.md`, with references under `skills/material-3/references/`.
-- **Plugin manifest**: `.claude-plugin/plugin.json` declares the `material-3` plugin metadata for Claude Code while keeping the skill content usable by other skill-aware assistants.
+- **Plugin manifest**: `skills/material-3/.claude-plugin/plugin.json` declares the `material-3` plugin metadata, and the root `.claude-plugin/marketplace.json` exposes it to Claude Code, while keeping the skill content usable by other skill-aware assistants.
 
 Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/releases/tag/v1.0.0).
 
@@ -104,11 +104,21 @@ The skill is a **best-effort distillation** and may drift as Google updates the 
 
 ## Installation
 
-### Claude Code
+### Recommended: `npx skills`
 
 ```bash
-claude plugin install github:hamen/material-3-skill
+npx --yes skills add hamen/material-3-skill --skill material-3 -y
 ```
+
+This is the preferred path for Codex, Claude Code, Cursor, and multi-agent setups because the repo follows the direct `skills/<name>/SKILL.md` layout.
+
+### Claude Code plugin install
+
+```text
+/plugin add hamen/material-3-skill --subdir skills/material-3
+```
+
+Claude Code reads `skills/material-3/.claude-plugin/plugin.json` and registers `skills/material-3/SKILL.md`.
 
 ### Codex or manual skill install
 
@@ -158,7 +168,8 @@ The audit scores your app across 10 categories (color tokens, typography, shape,
 
 | File | Description |
 |------|-------------|
-| `.claude-plugin/plugin.json` | Claude Code plugin manifest for one-command installation |
+| `.claude-plugin/marketplace.json` | Claude Code marketplace manifest, points at the `material-3` plugin subdir |
+| `skills/material-3/.claude-plugin/plugin.json` | Claude Code plugin manifest for the `material-3` skill |
 | `skills/material-3/SKILL.md` | Main skill: philosophy, decision trees, token overview, component table, Compose-first notes, limited web patterns, audit procedure |
 | `skills/material-3/references/color-system.md` | Color roles, tonal palettes, dynamic color, baseline schemes (Compose + CSS) |
 | `skills/material-3/references/component-catalog.md` | Components with Compose mappings and `@material/web` where applicable |

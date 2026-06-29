@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "material-3-skill",
+  "description": "Material Design 3 (Material You) implementation skill for Jetpack Compose, Flutter, and web",
+  "owner": {
+    "name": "Ivan Morgillo"
+  },
+  "plugins": [
+    {
+      "name": "material-3",
+      "description": "Implement Google's Material Design 3 (Material You) UI system: design tokens, 30+ components, adaptive layout, dynamic color theming, M3 Expressive, and accessibility. Primary focus Jetpack Compose; also Flutter and limited web (@material/web).",
+      "author": { "name": "Ivan Morgillo" },
+      "category": "development",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/hamen/material-3-skill.git",
+        "path": "skills/material-3"
+      },
+      "tags": ["material-design", "material3", "jetpack-compose", "flutter", "android", "ui", "agent-skill"]
+    }
+  ]
+}

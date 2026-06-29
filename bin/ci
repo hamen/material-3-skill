@@ -4,11 +4,12 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 if ! command -v jq >/dev/null 2>&1; then
-  printf 'jq is required to validate .claude-plugin/plugin.json\n' >&2
+  printf 'jq is required to validate the .claude-plugin manifests\n' >&2
   exit 1
 fi
 
-jq -e . .claude-plugin/plugin.json >/dev/null
+jq -e . .claude-plugin/marketplace.json >/dev/null
+jq -e . skills/material-3/.claude-plugin/plugin.json >/dev/null
 bash tests/plugin_layout_test.sh
 
 printf 'CI checks passed.\n'

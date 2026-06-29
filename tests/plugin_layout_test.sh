@@ -35,9 +35,14 @@ expect_contains() {
   grep -Fq "$pattern" "$path" || fail "expected $path to contain: $pattern"
 }
 
-expect_file ".claude-plugin/plugin.json"
-expect_contains ".claude-plugin/plugin.json" '"name": "material-3"'
-expect_contains ".claude-plugin/plugin.json" '"repository": "https://github.com/hamen/material-3-skill"'
+expect_file ".claude-plugin/marketplace.json"
+expect_contains ".claude-plugin/marketplace.json" '"name": "material-3-skill"'
+expect_contains ".claude-plugin/marketplace.json" '"path": "skills/material-3"'
+expect_absent ".claude-plugin/plugin.json"
+
+expect_file "skills/material-3/.claude-plugin/plugin.json"
+expect_contains "skills/material-3/.claude-plugin/plugin.json" '"name": "material-3"'
+expect_contains "skills/material-3/.claude-plugin/plugin.json" '"repository": "https://github.com/hamen/material-3-skill"'
 
 expect_file "skills/material-3/SKILL.md"
 expect_dir "skills/material-3/references"
@@ -45,7 +50,7 @@ expect_file "skills/material-3/references/color-system.md"
 expect_absent "SKILL.md"
 expect_absent "references"
 
-expect_contains "README.md" "claude plugin install github:hamen/material-3-skill"
+expect_contains "README.md" "/plugin add hamen/material-3-skill --subdir skills/material-3"
 expect_contains "README.md" "skills/material-3/SKILL.md"
 
 if [[ "$failures" -gt 0 ]]; then
