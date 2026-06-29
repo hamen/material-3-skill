@@ -1,6 +1,6 @@
 # Material Design 3 Skill
 
-**Version 1.1.0 · released 2026-05-20** — Adds Google I/O 2026 Material guidance for expressive layout, spacing, Compose-first Android, and updated expressive components.
+**Version 1.1.1 · released 2026-06-29** — Fixes Claude Code installation by shipping a plugin marketplace manifest; documents the working install commands.
 
 A comprehensive skill for AI coding assistants that can load `SKILL.md` files, covering Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
 
@@ -9,6 +9,16 @@ A comprehensive skill for AI coding assistants that can load `SKILL.md` files, c
 ---
 
 ## What's new
+
+### 1.1.1 — 2026-06-29
+
+**Fixed — Claude Code installation.**
+
+- The repo now ships a plugin **marketplace manifest** at `.claude-plugin/marketplace.json` and moves the plugin manifest to `skills/material-3/.claude-plugin/plugin.json`. Previously the documented `claude plugin install github:hamen/material-3-skill` failed with *"not found in any configured marketplace"* ([#8](https://github.com/hamen/material-3-skill/issues/8)).
+- Documented the install paths that actually work — `npx skills` and the Claude Code marketplace flow (see [Installation](#installation)).
+- **Migration**: if you installed (or tried to) with the old `claude plugin install github:hamen/material-3-skill` command, reinstall with one of the commands in [Installation](#installation).
+
+Read the full release notes: [v1.1.1](https://github.com/hamen/material-3-skill/releases/tag/v1.1.1).
 
 ### 1.1.0 — 2026-05-20
 
@@ -25,6 +35,8 @@ Read the full release notes: [v1.1.0](https://github.com/hamen/material-3-skill/
 - **Claude Code one-command install**: install directly with `claude plugin install github:hamen/material-3-skill`.
 - **Portable skill layout**: the skill now lives at `skills/material-3/SKILL.md`, with references under `skills/material-3/references/`.
 - **Plugin manifest**: `.claude-plugin/plugin.json` declares the `material-3` plugin metadata for Claude Code while keeping the skill content usable by other skill-aware assistants.
+
+> **Superseded in 1.1.1.** The `claude plugin install github:…` command above never worked and the plugin manifest has moved — use the current commands in [Installation](#installation).
 
 Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/releases/tag/v1.0.0).
 
@@ -104,11 +116,33 @@ The skill is a **best-effort distillation** and may drift as Google updates the 
 
 ## Installation
 
-### Claude Code
+### Recommended: `npx skills`
 
 ```bash
-claude plugin install github:hamen/material-3-skill
+npx --yes skills add hamen/material-3-skill --skill material-3 -y
 ```
+
+This is the preferred path for Codex, Claude Code, Cursor, and multi-agent setups because the repo follows the direct `skills/<name>/SKILL.md` layout.
+
+### Claude Code plugin install
+
+Add this repository as a plugin marketplace, then install the `material-3` plugin from it.
+
+From inside an interactive Claude Code session:
+
+```text
+/plugin marketplace add hamen/material-3-skill
+/plugin install material-3@material-3-skill
+```
+
+Or from your shell:
+
+```bash
+claude plugin marketplace add hamen/material-3-skill
+claude plugin install material-3@material-3-skill
+```
+
+The root `.claude-plugin/marketplace.json` points at `skills/material-3`, where Claude Code reads `.claude-plugin/plugin.json` and registers `SKILL.md`.
 
 ### Codex or manual skill install
 
@@ -158,7 +192,8 @@ The audit scores your app across 10 categories (color tokens, typography, shape,
 
 | File | Description |
 |------|-------------|
-| `.claude-plugin/plugin.json` | Claude Code plugin manifest for one-command installation |
+| `.claude-plugin/marketplace.json` | Claude Code marketplace manifest, points at the `material-3` plugin subdir |
+| `skills/material-3/.claude-plugin/plugin.json` | Claude Code plugin manifest for the `material-3` skill |
 | `skills/material-3/SKILL.md` | Main skill: philosophy, decision trees, token overview, component table, Compose-first notes, limited web patterns, audit procedure |
 | `skills/material-3/references/color-system.md` | Color roles, tonal palettes, dynamic color, baseline schemes (Compose + CSS) |
 | `skills/material-3/references/component-catalog.md` | Components with Compose mappings and `@material/web` where applicable |

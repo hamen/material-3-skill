@@ -4,11 +4,32 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 if ! command -v jq >/dev/null 2>&1; then
-  printf 'jq is required to validate .claude-plugin/plugin.json\n' >&2
+  printf 'jq is required to validate the .claude-plugin manifests\n' >&2
   exit 1
 fi
 
-jq -e . .claude-plugin/plugin.json >/dev/null
+jq -e . .claude-plugin/marketplace.json >/dev/null
+jq -e . skills/material-3/.claude-plugin/plugin.json >/dev/null
+
+# Cross-check: the marketplace must point at the skill subdir that holds plugin.json.
+plugin_path="$(jq -r '.plugins[0].source.path' .claude-plugin/marketplace.json)"
+if [[ ! -f "$plugin_path/.claude-plugin/plugin.json" ]]; then
+  printf 'marketplace.json source.path (%s) has no .claude-plugin/plugin.json\n' "$plugin_path" >&2
+  exit 1
+fi
+
+# Guard against the wrong nested layout (skills/<plugin>/skills/...).
+if [[ -d "$plugin_path/skills" ]]; then
+  printf 'unexpected nested skills/ directory inside %s\n' "$plugin_path" >&2
+  exit 1
+fi
+
+# Strict schema validation when the Claude Code CLI is available.
+if command -v claude >/dev/null 2>&1; then
+  claude plugin validate --strict .claude-plugin/marketplace.json
+  claude plugin validate --strict "$plugin_path"
+fi
+
 bash tests/plugin_layout_test.sh
 
 printf 'CI checks passed.\n'
