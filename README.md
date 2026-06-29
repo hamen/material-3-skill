@@ -1,6 +1,6 @@
 # Material Design 3 Skill
 
-**Version 1.1.0 · released 2026-05-20** — Adds Google I/O 2026 Material guidance for expressive layout, spacing, Compose-first Android, and updated expressive components.
+**Version 1.1.1 · released 2026-06-29** — Fixes Claude Code installation by shipping a plugin marketplace manifest; documents the working install commands.
 
 A comprehensive skill for AI coding assistants that can load `SKILL.md` files, covering Google's [Material Design 3](https://m3.material.io/) (Material You) UI system.
 
@@ -9,6 +9,16 @@ A comprehensive skill for AI coding assistants that can load `SKILL.md` files, c
 ---
 
 ## What's new
+
+### 1.1.1 — 2026-06-29
+
+**Fixed — Claude Code installation.**
+
+- The repo now ships a plugin **marketplace manifest** at `.claude-plugin/marketplace.json` and moves the plugin manifest to `skills/material-3/.claude-plugin/plugin.json`. Previously the documented `claude plugin install github:hamen/material-3-skill` failed with *"not found in any configured marketplace"* ([#8](https://github.com/hamen/material-3-skill/issues/8)).
+- Documented the install paths that actually work — `npx skills` and the Claude Code marketplace flow (see [Installation](#installation)).
+- **Migration**: if you installed (or tried to) with the old `claude plugin install github:hamen/material-3-skill` command, reinstall with one of the commands in [Installation](#installation).
+
+Read the full release notes: [v1.1.1](https://github.com/hamen/material-3-skill/releases/tag/v1.1.1).
 
 ### 1.1.0 — 2026-05-20
 
@@ -22,9 +32,9 @@ Read the full release notes: [v1.1.0](https://github.com/hamen/material-3-skill/
 
 **Added — portable skill packaging.**
 
-- **Claude Code install**: install via `npx skills` or `/plugin add hamen/material-3-skill --subdir skills/material-3` (see [Installation](#installation)).
+- **Claude Code one-command install**: install directly with `claude plugin install github:hamen/material-3-skill`.
 - **Portable skill layout**: the skill now lives at `skills/material-3/SKILL.md`, with references under `skills/material-3/references/`.
-- **Plugin manifest**: `skills/material-3/.claude-plugin/plugin.json` declares the `material-3` plugin metadata, and the root `.claude-plugin/marketplace.json` exposes it to Claude Code, while keeping the skill content usable by other skill-aware assistants.
+- **Plugin manifest**: `.claude-plugin/plugin.json` declares the `material-3` plugin metadata for Claude Code while keeping the skill content usable by other skill-aware assistants.
 
 Read the full release notes: [v1.0.0](https://github.com/hamen/material-3-skill/releases/tag/v1.0.0).
 
@@ -114,11 +124,23 @@ This is the preferred path for Codex, Claude Code, Cursor, and multi-agent setup
 
 ### Claude Code plugin install
 
+Add this repository as a plugin marketplace, then install the `material-3` plugin from it.
+
+From inside an interactive Claude Code session:
+
 ```text
-/plugin add hamen/material-3-skill --subdir skills/material-3
+/plugin marketplace add hamen/material-3-skill
+/plugin install material-3@material-3-skill
 ```
 
-Claude Code reads `skills/material-3/.claude-plugin/plugin.json` and registers `skills/material-3/SKILL.md`.
+Or from your shell:
+
+```bash
+claude plugin marketplace add hamen/material-3-skill
+claude plugin install material-3@material-3-skill
+```
+
+The root `.claude-plugin/marketplace.json` points at `skills/material-3`, where Claude Code reads `.claude-plugin/plugin.json` and registers `SKILL.md`.
 
 ### Codex or manual skill install
 

@@ -1,6 +1,6 @@
 {
   "name": "material-3",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Material Design 3 (Material You) implementation skill for Jetpack Compose, Flutter, and web.",
   "author": {
     "name": "Ivan Morgillo"

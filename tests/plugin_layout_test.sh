@@ -50,7 +50,8 @@ expect_file "skills/material-3/references/color-system.md"
 expect_absent "SKILL.md"
 expect_absent "references"
 
-expect_contains "README.md" "/plugin add hamen/material-3-skill --subdir skills/material-3"
+expect_contains "README.md" "/plugin marketplace add hamen/material-3-skill"
+expect_contains "README.md" "/plugin install material-3@material-3-skill"
 expect_contains "README.md" "skills/material-3/SKILL.md"
 
 if [[ "$failures" -gt 0 ]]; then
