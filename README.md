@@ -207,6 +207,24 @@ The audit scores your app across 10 categories (color tokens, typography, shape,
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for platform hierarchy (Compose-first), Expressive rules, and a PR checklist so documentation stays consistent.
 
+## Made by
+
+I'm **Ivan** — Android dev, creator of this skill. When I'm not writing Compose
+tooling, I ship small apps. If this saved you time, take one for a spin:
+
+- 🎯 **[3 Things a Day](https://3things.day/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill)** — pick 3 things, finish them. That's the app.
+- 💪 **[StreakUp](https://streakup.fit/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill)** — push-up, squat & pull-up streak tracker.
+- 🌙 **[Bedtime Stories](https://bedtimestories.click/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill)** — AI bedtime stories your kid helps build.
+- 🃏 **[Blackjack Trainer 21](https://trainblackjack.app/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill)** — learn perfect basic strategy with spaced repetition.
+- 📚 **[Ebooks for Kindle](https://kindlegratis.fun/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill)** — free Kindle book deals, updated daily.
+- 🏊 **[Swimming Lane](https://swimminglane.app/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill)** — swim lap & workout tracker.
+- 🥫 **[No Waste Food](https://nowastefood.app/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill)** — track your pantry, stop wasting food.
+- 📱 **[Brainrot Tax](https://brainrottax.app/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill)** — a reality check on your screen time.
+- 🖼️ **[Epic AI Wallpapers](https://cwti-ltd.github.io/ai-wallpapers/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill)** — fresh AI wallpapers, every day.
+- 🧠 **[MyGoo](https://mygoo.fun/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill)** — daily trivia quiz game (Italian).
+
+Find me at [ivanmorgillo.com](https://ivanmorgillo.com/?utm_source=github&utm_medium=readme&utm_campaign=material_3_skill) · [@hamen](https://x.com/hamen).
+
 ## License
 
 MIT
